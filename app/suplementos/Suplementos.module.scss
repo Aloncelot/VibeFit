@@ -1,0 +1,299 @@
+.container {
+  padding: 4rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.mainTitle {
+  font-family: var(--font-black-ops);
+  text-align: center;
+  color: var(--color-gold);
+  margin-bottom: 3rem;
+  text-transform: uppercase;
+}
+
+/* Grilla de Marcas */
+.gridMarcas {
+  display: flex;
+  flex-wrap: wrap;
+  /* Permite que bajen a la siguiente línea */
+  justify-content: center;
+  /* LA MAGIA: Centra los huérfanos de la última fila */
+  align-items: stretch;
+  /* Hace que todas las tarjetas midan lo mismo de alto */
+  gap: 2rem;
+  max-width: 1200px;
+  /* Contenedor máximo para que no se estiren al infinito */
+  margin: 0 auto;
+  /* Centra el bloque entero en la pantalla */
+}
+
+.marcaCard {
+  flex: 0 1 240px;
+  /* Ancho base de 240px, no crecen más de eso */
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+
+  /* Flex interno para empujar el texto siempre hacia abajo aunque los logos varíen */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &:hover {
+    border-color: var(--color-gold);
+    transform: translateY(-5px);
+    background: rgba(212, 175, 55, 0.05);
+    /* Le añadimos un brillo sutil abajo para resaltar la interacción */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 175, 55, 0.1);
+  }
+
+  .logoWrapper {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    margin-bottom: 1.5rem;
+
+    .brandLogo {
+      object-fit: contain;
+      /* Asumo que ya los tienes en blanco, si no, mantén el filtro invert */
+      filter: grayscale(1) invert(1);
+      transition: transform 0.3s ease;
+    }
+  }
+
+  /* Efecto pop en el logo al hacer hover en la tarjeta */
+  &:hover .brandLogo {
+    transform: scale(1.05);
+  }
+
+  span {
+    font-family: var(--font-mohave);
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #e0e0e0;
+  }
+}
+
+/* Catálogo Agrupado */
+.catalogHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+
+  .backBtn {
+    background: none;
+    border: 1px solid var(--color-gold);
+    color: var(--color-gold);
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--color-gold);
+      color: black;
+    }
+  }
+
+  .brandTitle {
+    font-family: var(--font-black-ops);
+    font-size: 2.5rem;
+    color: white;
+  }
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.groupedCard {
+  background: rgba(18, 18, 18, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+
+  .imageBox {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: #ffffff;
+    overflow: hidden;
+    /* Evita que el láser se salga de la caja */
+
+    /* La imagen real */
+    .prodImg {
+      object-fit: contain;
+      padding: 2rem;
+      transition: opacity 0.4s ease-in-out, transform 0.5s ease;
+    }
+
+    /* Clases para el fade in/out suave */
+    .imgHidden {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    .imgVisible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* EL LOADER NOVEDOSO (Cyber-Scanner) */
+    /* EL LOADER NOVEDOSO (Cyber-Scanner) */
+    .loaderContainer {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.85);
+      /* Fondo blanco ligeramente translúcido */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+
+      .loaderText {
+        font-family: var(--font-black-ops);
+        color: #111111;
+        /* 👈 AHORA SÍ: Letras oscuras (casi negro) para máximo contraste */
+        font-size: 1.8rem;
+        letter-spacing: 5px;
+        z-index: 1;
+        /* Le añadimos una sombra dorada al texto oscuro para que resalte aún más */
+        text-shadow: 0px 2px 10px rgba(212, 175, 55, 0.5);
+      }
+
+      .scanline {
+        position: absolute;
+        width: 100%;
+        height: 4px;
+        /* Un poco más grueso */
+        background: var(--color-gold);
+        z-index: 2;
+        animation: laserScan 1s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+      }
+    }
+  }
+
+  /* Animación del láser */
+  @keyframes laserScan {
+    0% {
+      top: 5%;
+      opacity: 0;
+    }
+
+    15% {
+      opacity: 1;
+    }
+
+    85% {
+      opacity: 1;
+    }
+
+    100% {
+      top: 95%;
+      opacity: 0;
+    }
+  }
+
+  .info {
+    padding: 1.5rem;
+
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .sizeTag {
+      color: var(--color-gold);
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .priceRow {
+      display: flex;
+      justify-content: space-between;
+      margin: 1rem 0;
+
+      .price {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .stock {
+        color: #4ade80;
+        font-size: 0.9rem;
+      }
+    }
+
+    .flavorSelect {
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        font-size: 0.7rem;
+        color: #888;
+        margin-bottom: 0.3rem;
+      }
+
+      select {
+        width: 100%;
+        background: #111;
+        border: 1px solid #333;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 5px;
+      }
+    }
+
+    .addCartBtn {
+      width: 100%;
+      background: var(--color-gold);
+      color: black;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 8px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+  }
+}
+
+
+.lowStockBadge {
+  background: #ff4444;
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

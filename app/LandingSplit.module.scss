@@ -1,0 +1,79 @@
+/* app/LandingSplit.module.scss */
+
+.splitWrapper {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+.section {
+  position: relative;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1); /* Transición más suave y lujosa */
+  background-size: cover;
+  background-position: center;
+  background-color: transparent;
+
+  &.left {
+    /* TODO: Pon aquí una buena imagen de suplementos */
+    background-image: url('/images/suplementos-bg.jpg'); 
+  }
+
+  &.right {
+    /* TODO: Pon aquí una buena imagen de ropa */
+    background-image: url('/images/ropa-bg.jpg');
+    border-left: 1px solid var(--color-gold-dark); /* Línea divisoria sutil en dorado oscuro */
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    /* Un gradiente oscuro para que el texto blanco y dorado resalte */
+    background: linear-gradient(to top, rgba(5,5,5,0.9), rgba(5,5,5,0.4));
+    transition: background 0.4s ease;
+  }
+
+  &:hover .overlay {
+    background: rgba(5,5,5,0.2); /* Se aclara al pasar el mouse */
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: var(--color-text);
+    padding: 2rem;
+
+    h2 {
+      font-family: var(--font-black-ops), sans-serif; /* 👈 LA MAGIA ESTÁ AQUÍ */
+      font-size: 4rem;
+      font-weight: 400; /* Black Ops One solo tiene peso 400 */
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin: 0;
+      color: var(--color-gold);
+      text-shadow: 0px 4px 15px rgba(212, 175, 55, 0.3);
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    p {
+      font-size: 1.2rem;
+      font-weight: 300;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-top: 0.5rem;
+    }
+  }
+
+  &:hover .content h2 {
+    transform: scale(1.05); /* El texto crece un poco al hover */
+    color: var(--color-gold-light);
+  }
+}
