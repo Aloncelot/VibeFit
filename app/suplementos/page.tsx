@@ -34,7 +34,7 @@ async function getSuplementosData() {
     FROM Marcas m
     JOIN Productos p ON m.id = p.marca_id
     JOIN SKUs s ON p.id = s.producto_id
-    WHERE s.stock > 0
+    WHERE s.stock > 0 AND p.categoria = 'Suplemento'
     ORDER BY m.nombre ASC
   `);
 
@@ -52,7 +52,7 @@ async function getSuplementosData() {
     FROM SKUs s
     JOIN Productos p ON s.producto_id = p.id
     JOIN Marcas m ON p.marca_id = m.id
-    WHERE s.stock > 0
+    WHERE s.stock > 0 AND p.categoria = 'Suplemento'
     ORDER BY p.nombre, s.sabor
   `);
 

@@ -1,3 +1,5 @@
+// app/admin/inventario/page.tsx
+
 import { conectarDB } from '@/lib/db';
 import InventarioClient from './InventarioClient';
 
