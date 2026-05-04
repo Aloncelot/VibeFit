@@ -122,8 +122,9 @@ export async function crearNuevoSKU(datos: {
 
         return { success: true, newSkuId: resultSku.recordset[0].id };
     } catch (error: unknown) {
+        await transaction.rollback(); // <-- ¡Primero liberamos la base de datos!
+
         if (error instanceof Error) {
-            await transaction.rollback();
             console.error("Error al crear SKU:", error);
             return { success: false, error: error.message };
         }

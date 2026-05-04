@@ -11,7 +11,9 @@ async function getInventario() {
       m.nombre as marca, 
       s.sabor, 
       s.tamano, 
-      s.stock
+      s.stock,
+      s.precio_proveedor,
+      s.precio_venta
     FROM SKUs s
     JOIN Productos p ON s.producto_id = p.id
     JOIN Marcas m ON p.marca_id = m.id

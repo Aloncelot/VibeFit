@@ -1,11 +1,13 @@
 // app/suplementos/SuplementosClient.tsx
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ChevronLeft, ShoppingCart, Search } from 'lucide-react';
 import styles from './Suplementos.module.scss';
+import { useCart } from '@/context/CartContext';
 
 // 1. Tipado estricto para evitar errores en Antigravity
 export interface MarcaSuplemento {
@@ -98,6 +100,11 @@ export default function SuplementosClient({
             exit="exit"
             className={styles.brandsWrapper}
           >
+            <div className={styles.globalHeader}>
+              <Link href="/" className={styles.backHomeBtn}>
+                <ChevronLeft size={20} /> REGRESAR AL INICIO
+              </Link>
+            </div>
             <h1 className={styles.mainTitle}>SELECCIONA UNA MARCA</h1>
             <div className={styles.gridMarcas}>
               {marcasData.map((marca: MarcaSuplemento) => (
@@ -170,8 +177,26 @@ export default function SuplementosClient({
 
 /* --- COMPONENTE INTERNO: TARJETA CON CARGA DINÁMICA --- */
 function GroupedProductCard({ product }: { product: GroupedProduct }) {
-  const [selectedVariant, setSelectedVariant] = useState(product.variantes[0]);
+  const [selectedVariantId, setSelectedVariantId] = useState(product.variantes[0].id);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { addToCart } = useCart();
+
+  // El estado se deriva de los props de forma síncrona durante el render
+  const selectedVariant = product.variantes.find((v: any) => v.id === selectedVariantId) || product.variantes[0];
+
+  const handleAddToCart = () => {
+    addToCart({
+      id: selectedVariant.id,
+      nombre: product.nombre,
+      marca: product.marca,
+      sabor: selectedVariant.sabor,
+      tamano: product.tamano,
+      precio: product.precio,
+      imagen_url: selectedVariant.imagen_variante_url,
+      cantidad: 1,
+      stock: selectedVariant.stock,
+    });
+  };
 
   return (
     <div className={styles.groupedCard}>
@@ -205,10 +230,7 @@ function GroupedProductCard({ product }: { product: GroupedProduct }) {
             value={selectedVariant.id}
             onChange={(e) => {
               setIsLoaded(false); // Reinicia el scanner para la nueva imagen
-              const variant = product.variantes.find((v: { id: number }) => v.id === parseInt(e.target.value));
-              if (variant) {
-                setSelectedVariant(variant);
-              }
+              setSelectedVariantId(parseInt(e.target.value));
             }}
           >
             {product.variantes.map((v: { id: number, sabor: string }) => (
@@ -230,8 +252,8 @@ function GroupedProductCard({ product }: { product: GroupedProduct }) {
           </div>
         </div>
 
-        <button className={styles.addCartBtn}>
-          <ShoppingCart size={18} /> AGREGAR AL CARRITO
+        <button className={styles.addCartBtn} onClick={handleAddToCart} disabled={selectedVariant.stock <= 0}>
+          <ShoppingCart size={18} /> {selectedVariant.stock > 0 ? 'AGREGAR AL CARRITO' : 'AGOTADO'}
         </button>
       </div>
     </div>

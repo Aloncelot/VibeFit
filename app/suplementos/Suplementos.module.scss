@@ -12,6 +12,34 @@
   text-transform: uppercase;
 }
 
+.globalHeader {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+}
+
+.backHomeBtn {
+  background: none;
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--color-gold);
+    color: black;
+  }
+}
+
 /* Grilla de Marcas */
 .gridMarcas {
   display: flex;
@@ -104,10 +132,51 @@
     }
   }
 
+  .headerInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+  }
+
   .brandTitle {
     font-family: var(--font-black-ops);
     font-size: 2.5rem;
     color: white;
+  }
+
+  .searchBox {
+    display: flex;
+    align-items: center;
+    background: #000;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    width: 300px;
+    transition: border-color 0.3s ease;
+
+    &:focus-within {
+      border-color: var(--color-gold);
+    }
+
+    .searchIcon {
+      color: #888;
+      margin-right: 10px;
+    }
+
+    input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: white;
+      outline: none;
+      font-size: 0.9rem;
+      font-family: inherit;
+
+      &::placeholder {
+        color: #666;
+      }
+    }
   }
 }
 
@@ -269,6 +338,18 @@
       justify-content: center;
       gap: 0.5rem;
       cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover:not(:disabled) {
+        transform: scale(1.02);
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      }
+
+      &:disabled {
+        background: #333;
+        color: #666;
+        cursor: not-allowed;
+      }
     }
   }
 }

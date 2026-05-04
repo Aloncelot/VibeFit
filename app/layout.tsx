@@ -3,6 +3,8 @@ import { Mohave, Black_Ops_One } from 'next/font/google';
 import './globals.scss';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import CartMenu from './components/CartMenu';
+import { CartProvider } from '@/context/CartContext';
 
 // Configuramos Mohave para el logo
 const mohave = Mohave({
@@ -32,11 +34,14 @@ export default function RootLayout({
     // Inyectamos las variables de las fuentes en el body
     <html lang="es" className={`${mohave.variable} ${blackOpsOne.variable}`}>
       <body style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <Navbar />
-        <div style={{ flex: 1, paddingTop: '80px' }}>
-          {children}
-          <Footer />
-        </div>
+        <CartProvider>
+          <Navbar />
+          <CartMenu />
+          <div style={{ flex: 1, paddingTop: '80px' }}>
+            {children}
+            <Footer />
+          </div>
+        </CartProvider>
       </body>
     </html>
   );

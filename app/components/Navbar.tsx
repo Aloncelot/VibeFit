@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ShoppingCart } from 'lucide-react';
 import styles from './Navbar.module.scss';
+import { useCart } from '@/context/CartContext';
 
 // 1. Variante para el contenedor principal (El Navbar que baja)
 const navVariants = {
@@ -33,6 +34,9 @@ const itemVariants = {
 };
 
 export default function Navbar() {
+  const { cartItems, toggleCart } = useCart();
+  const cartCount = cartItems.reduce((acc: number, item: { cantidad?: number }) => acc + (item.cantidad || 1), 0);
+
   return (
     <motion.nav 
       className={styles.navbar}
@@ -65,9 +69,9 @@ export default function Navbar() {
 
         {/* Lado Derecho: Carrito */}
         <motion.div className={styles.navActions} variants={itemVariants}>
-          <button className={styles.cartBtn}>
+          <button className={styles.cartBtn} onClick={toggleCart}>
             <ShoppingCart size={24} />
-            <span className={styles.badge}>0</span>
+            <span className={styles.badge}>{cartCount}</span>
           </button>
         </motion.div>
       </div>

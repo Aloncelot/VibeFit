@@ -20,13 +20,28 @@ export function CartProvider({ children }) {
 
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
+  // Función para actualizar cantidad
+  const updateQuantity = (index, newQuantity) => {
+    setCartItems((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], cantidad: newQuantity };
+      return updated;
+    });
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   return (
-    <CartContext.Provider value={{ 
-      cartItems, 
-      addToCart, 
-      removeFromCart, 
-      isCartOpen, 
-      toggleCart 
+    <CartContext.Provider value={{
+      cartItems,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      isCartOpen,
+      toggleCart
     }}>
       {children}
     </CartContext.Provider>

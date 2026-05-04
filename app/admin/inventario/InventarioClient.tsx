@@ -2,8 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { registrarInbound, corregirStockFisico } from './actions';
-import { PackagePlus, CheckCircle2, Search, ArrowLeft } from 'lucide-react';
+import { registrarInbound, corregirStockFisico, actualizarPrecio, obtenerHistorialPrecio } from './actions';
+import { PackagePlus, CheckCircle2, Search, ArrowLeft, History, X } from 'lucide-react';
 
 export interface InventarioItem {
   id: number;
@@ -12,6 +12,8 @@ export interface InventarioItem {
   sabor: string;
   tamano: string;
   stock: number;
+  precio_proveedor: number;
+  precio_venta: number;
 }
 
 export default function InventarioClient({ items }: { items: InventarioItem[] }) {
@@ -23,6 +25,46 @@ export default function InventarioClient({ items }: { items: InventarioItem[] })
   const [busqueda, setBusqueda] = useState('');
 
   const [editandoStock, setEditandoStock] = useState<{ id: number, valor: string } | null>(null);
+  const [editandoPrecio, setEditandoPrecio] = useState<{ id: number, tipo: 'precio_proveedor' | 'precio_venta', valor: string } | null>(null);
+  
+  const [historialModal, setHistorialModal] = useState<{
+    visible: boolean;
+    skuId: number | null;
+    datos: any[];
+    cargando: boolean;
+  }>({ visible: false, skuId: null, datos: [], cargando: false });
+
+  const handleCorreccionPrecio = async (skuId: number, tipo: 'precio_proveedor' | 'precio_venta', precioAnterior: number) => {
+    if (!editandoPrecio) return;
+    
+    const nuevoPrecio = parseFloat(editandoPrecio.valor);
+    if (isNaN(nuevoPrecio) || nuevoPrecio < 0) {
+      setEditandoPrecio(null);
+      return;
+    }
+
+    if (nuevoPrecio !== precioAnterior) {
+      setLoadingIds(prev => new Set(prev).add(skuId));
+      await actualizarPrecio(skuId, tipo, nuevoPrecio, precioAnterior);
+      setLoadingIds(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(skuId);
+        return newSet;
+      });
+    }
+    setEditandoPrecio(null);
+  };
+
+  const verHistorial = async (skuId: number) => {
+    setHistorialModal({ visible: true, skuId, datos: [], cargando: true });
+    const response = await obtenerHistorialPrecio(skuId);
+    if (response.success) {
+      setHistorialModal(prev => ({ ...prev, datos: response.data, cargando: false }));
+    } else {
+      setHistorialModal(prev => ({ ...prev, cargando: false }));
+      alert("Error al cargar historial");
+    }
+  };
 
   const handleCorreccion = async (skuId: number, stockAnterior: number) => {
     if (!editandoStock) return;
@@ -143,6 +185,9 @@ export default function InventarioClient({ items }: { items: InventarioItem[] })
             <th>PRODUCTO</th>
             <th>SABOR / TAMAÑO</th>
             <th style={{ textAlign: 'center' }}>STOCK ACTUAL</th>
+            <th style={{ textAlign: 'center' }}>PRECIO PROV.</th>
+            <th style={{ textAlign: 'center' }}>PRECIO VENTA</th>
+            <th style={{ textAlign: 'center' }}>HISTORIAL</th>
             <th style={{ textAlign: 'right' }}>+ AGREGAR INBOUND</th>
           </tr>
         </thead>
@@ -193,6 +238,86 @@ export default function InventarioClient({ items }: { items: InventarioItem[] })
                   item.stock
                 )}
               </td>
+              
+              {/* PRECIO PROVEEDOR */}
+              <td
+                style={{
+                  textAlign: 'center',
+                  fontSize: '1.1rem',
+                  cursor: editandoPrecio?.id === item.id && editandoPrecio.tipo === 'precio_proveedor' ? 'text' : 'pointer',
+                  backgroundColor: editandoPrecio?.id === item.id && editandoPrecio.tipo === 'precio_proveedor' ? 'rgba(255,255,255,0.1)' : 'transparent'
+                }}
+                onClick={() => setEditandoPrecio({ id: item.id, tipo: 'precio_proveedor', valor: String(item.precio_proveedor) })}
+                onBlur={() => {
+                  if (editandoPrecio?.id === item.id && editandoPrecio.tipo === 'precio_proveedor') {
+                    handleCorreccionPrecio(item.id, 'precio_proveedor', item.precio_proveedor);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleCorreccionPrecio(item.id, 'precio_proveedor', item.precio_proveedor);
+                  if (e.key === 'Escape') setEditandoPrecio(null);
+                }}
+              >
+                {editandoPrecio?.id === item.id && editandoPrecio.tipo === 'precio_proveedor' ? (
+                  <input
+                    autoFocus
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={editandoPrecio.valor}
+                    onChange={(e) => setEditandoPrecio({ id: item.id, tipo: 'precio_proveedor', valor: e.target.value })}
+                    style={{ width: '80px', background: 'black', border: '1px solid #444', color: 'white', padding: '0.2rem', textAlign: 'center', fontSize: '1.1rem' }}
+                  />
+                ) : (
+                  `$${Number(item.precio_proveedor || 0).toFixed(2)}`
+                )}
+              </td>
+
+              {/* PRECIO VENTA */}
+              <td
+                style={{
+                  textAlign: 'center',
+                  fontSize: '1.1rem',
+                  cursor: editandoPrecio?.id === item.id && editandoPrecio.tipo === 'precio_venta' ? 'text' : 'pointer',
+                  backgroundColor: editandoPrecio?.id === item.id && editandoPrecio.tipo === 'precio_venta' ? 'rgba(255,255,255,0.1)' : 'transparent',
+                  color: 'var(--color-gold)'
+                }}
+                onClick={() => setEditandoPrecio({ id: item.id, tipo: 'precio_venta', valor: String(item.precio_venta) })}
+                onBlur={() => {
+                  if (editandoPrecio?.id === item.id && editandoPrecio.tipo === 'precio_venta') {
+                    handleCorreccionPrecio(item.id, 'precio_venta', item.precio_venta);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleCorreccionPrecio(item.id, 'precio_venta', item.precio_venta);
+                  if (e.key === 'Escape') setEditandoPrecio(null);
+                }}
+              >
+                {editandoPrecio?.id === item.id && editandoPrecio.tipo === 'precio_venta' ? (
+                  <input
+                    autoFocus
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={editandoPrecio.valor}
+                    onChange={(e) => setEditandoPrecio({ id: item.id, tipo: 'precio_venta', valor: e.target.value })}
+                    style={{ width: '80px', background: 'black', border: '1px solid #444', color: 'white', padding: '0.2rem', textAlign: 'center', fontSize: '1.1rem' }}
+                  />
+                ) : (
+                  `$${Number(item.precio_venta || 0).toFixed(2)}`
+                )}
+              </td>
+
+              <td style={{ textAlign: 'center' }}>
+                <button 
+                  onClick={() => verHistorial(item.id)}
+                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#00e5ff' }}
+                  title="Ver Historial de Precios"
+                >
+                  <History size={20} />
+                </button>
+              </td>
+
               <td style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', padding: '1rem' }}>
                 <input
                   type="number"
@@ -224,6 +349,75 @@ export default function InventarioClient({ items }: { items: InventarioItem[] })
       {itemsFiltrados.length === 0 && (
         <div style={{ textAlign: 'center', padding: '3rem', color: '#888' }}>
           NO SE ENCONTRARON PRODUCTOS QUE COINCIDAN CON "{busqueda.toUpperCase()}"
+        </div>
+      )}
+
+      {/* MODAL DE HISTORIAL */}
+      {historialModal.visible && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            background: '#111',
+            border: '1px solid #444',
+            borderRadius: '12px',
+            padding: '2rem',
+            width: '90%',
+            maxWidth: '600px',
+            maxHeight: '80vh',
+            overflowY: 'auto'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+              <h2 style={{ color: 'var(--color-gold)', margin: 0, fontSize: '1.5rem' }}>Historial de Precios</h2>
+              <button 
+                onClick={() => setHistorialModal({ visible: false, skuId: null, datos: [], cargando: false })}
+                style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer' }}
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {historialModal.cargando ? (
+              <div style={{ textAlign: 'center', color: '#888', padding: '2rem' }}>Cargando historial...</div>
+            ) : historialModal.datos.length === 0 ? (
+              <div style={{ textAlign: 'center', color: '#888', padding: '2rem' }}>No hay registros en el historial para este producto.</div>
+            ) : (
+              <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', color: 'white' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid #444' }}>
+                    <th style={{ padding: '0.8rem 0' }}>Fecha</th>
+                    <th>Tipo</th>
+                    <th style={{ textAlign: 'right' }}>Anterior</th>
+                    <th style={{ textAlign: 'right' }}>Nuevo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {historialModal.datos.map((registro: any) => (
+                    <tr key={registro.id} style={{ borderBottom: '1px solid #222' }}>
+                      <td style={{ padding: '0.8rem 0', color: '#aaa', fontSize: '0.9rem' }}>
+                        {new Date(registro.fecha_cambio).toLocaleString()}
+                      </td>
+                      <td style={{ color: registro.tipo_precio === 'precio_venta' ? 'var(--color-gold)' : '#fff' }}>
+                        {registro.tipo_precio === 'precio_venta' ? 'Venta' : 'Proveedor'}
+                      </td>
+                      <td style={{ textAlign: 'right', color: '#888', textDecoration: 'line-through' }}>
+                        ${Number(registro.precio_anterior).toFixed(2)}
+                      </td>
+                      <td style={{ textAlign: 'right', fontWeight: 'bold' }}>
+                        ${Number(registro.precio_nuevo).toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
         </div>
       )}
     </div>
