@@ -19,12 +19,16 @@ interface RopaRaw {
 async function getGymWearData() {
     const pool = await conectarDB();
 
-    // 1. Traemos solo las marcas que tienen productos de ropa
+    // 1. Traemos solo las marcas que tienen productos de ropa y mapeamos sus logos locales
     const marcasResult = await pool.request().query(`
     SELECT DISTINCT m.id, m.nombre, 
-    -- Si tuvieras logos en BD los sacas aquí, por ahora pasamos un logo genérico o nulo
-    'https://via.placeholder.com/150/000000/FFFFFF/?text=' + m.nombre as logo_url
-    FROM Marcas m
+    CASE 
+        WHEN m.nombre = 'GYMSHARK' THEN '/Gymshark.webp'
+        WHEN m.nombre = 'YOUNGLA' THEN '/youngla_logo.webp'
+        WHEN m.nombre = 'DARC SPORT' THEN '/darcsport.jpg'
+        ELSE '/Vibefit-logo.png' 
+    END as logo_url
+    FROM Marcas m<
     JOIN Productos p ON m.id = p.marca_id
     WHERE p.categoria IN ('TOPS', 'BOTTOMS', 'ACCESORIOS')
   `);

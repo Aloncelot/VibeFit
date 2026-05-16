@@ -1,13 +1,13 @@
 // app/ropa/RopaClient.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, ShoppingCart } from 'lucide-react';
-import styles from '../suplementos/Suplementos.module.scss'; // Reutilizamos tus estilos base
-
+import { ChevronLeft, ChevronRight, ShoppingCart, Search } from 'lucide-react';
+import styles from '../suplementos/Suplementos.module.scss'; // 👈 Reutilizamos tus estilos
+import { useCart } from '@/context/CartContext'; // 👈 Conectamos el carrito real
 
 export interface MarcaRopa {
     id: number;
@@ -37,8 +37,6 @@ export interface ProductoRopa {
     colores: ColorRopa[];
 }
 
-
-
 export default function RopaClient({
     initialMarcas,
     initialProducts
@@ -48,10 +46,36 @@ export default function RopaClient({
 }) {
     const [view, setView] = useState<'BRANDS' | 'CATALOG'>('BRANDS');
     const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+    const [busqueda, setBusqueda] = useState('');
 
     // Filtros de Ropa
     const [genero, setGenero] = useState<'TODOS' | 'HOMBRE' | 'MUJER'>('TODOS');
     const [categoria, setCategoria] = useState<'TODOS' | 'TOPS' | 'BOTTOMS' | 'ACCESORIOS'>('TODOS');
+
+    // Lógica de filtrado combinada (Marca + Búsqueda + Género + Categoría)
+    const productosFiltrados = useMemo(() => {
+        let filtrados = initialProducts;
+
+        if (selectedBrand) {
+            filtrados = filtrados.filter(p => p.marca === selectedBrand);
+        }
+
+        if (busqueda) {
+            filtrados = filtrados.filter(p =>
+                p.nombre.toLowerCase().includes(busqueda.toLowerCase())
+            );
+        }
+
+        if (genero !== 'TODOS') {
+            filtrados = filtrados.filter(p => p.genero === genero);
+        }
+
+        if (categoria !== 'TODOS') {
+            filtrados = filtrados.filter(p => p.categoria === categoria);
+        }
+
+        return filtrados;
+    }, [initialProducts, selectedBrand, busqueda, genero, categoria]);
 
     // Animaciones
     const pageVariants = {
@@ -72,17 +96,23 @@ export default function RopaClient({
                                 <ChevronLeft size={20} /> REGRESAR AL INICIO
                             </Link>
                         </div>
-                        <h1 className={styles.mainTitle}>GYM WEAR</h1>
+                        <h1 className={styles.mainTitle}>PREMIUM GYM WEAR</h1>
+
+                        {/* GRILLA CON ESTILOS DE SUPLEMENTOS (Logo invertido al hover) */}
                         <div className={styles.gridMarcas}>
                             {initialMarcas.map((marca) => (
                                 <div
                                     key={marca.nombre}
                                     className={styles.marcaCard}
                                     onClick={() => { setSelectedBrand(marca.nombre); setView('CATALOG'); }}
-                                    style={{ background: '#111' }} // Fondo oscuro para que resalten los logos blancos
                                 >
                                     <div className={styles.logoWrapper}>
-                                        <img src={marca.logo_url} alt={marca.nombre} style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'invert(1)' }} />
+                                        <Image
+                                            src={marca.logo_url}
+                                            alt={marca.nombre}
+                                            fill
+                                            className={styles.brandLogo}
+                                        />
                                     </div>
                                     <span>{marca.nombre}</span>
                                 </div>
@@ -93,23 +123,35 @@ export default function RopaClient({
 
                     /* --- VISTA 2: CATÁLOGO FILTRADO --- */
                     <motion.div key="catalog" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+
+                        {/* HEADER ESTILO SUPLEMENTOS (Con barra de búsqueda) */}
                         <div className={styles.catalogHeader}>
-                            <button className={styles.backBtn} onClick={() => setView('BRANDS')}>
-                                <ChevronLeft size={20} /> CAMBIAR MARCA
+                            <button className={styles.backBtn} onClick={() => { setView('BRANDS'); setBusqueda(''); }}>
+                                <ChevronLeft size={20} /> REGRESAR A MARCAS
                             </button>
-                            <h2 className={styles.brandTitle}>{selectedBrand}</h2>
+
+                            <div className={styles.headerInfo}>
+                                <h2 className={styles.brandTitle}>{selectedBrand?.toUpperCase()}</h2>
+                                <div className={styles.searchBox}>
+                                    <Search size={18} className={styles.searchIcon} />
+                                    <input
+                                        type="text"
+                                        placeholder="BUSCAR PRENDA..."
+                                        value={busqueda}
+                                        onChange={(e) => setBusqueda(e.target.value)}
+                                    />
+                                </div>
+                            </div>
                         </div>
 
-                        {/* BARRA DE FILTROS (GÉNERO Y CATEGORÍA) */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '3rem', background: '#111', padding: '1.5rem', borderRadius: '12px', border: '1px solid #333' }}>
-
-                            {/* Filtro de Género */}
-                            <div style={{ display: 'inline-flex', background: '#222', borderRadius: '30px', padding: '0.2rem', justifyContent: 'center', margin: '0 auto' }}>
+                        {/* BARRA DE FILTROS ESPECÍFICOS DE ROPA (GÉNERO Y CATEGORÍA) */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '3rem', background: 'rgba(17, 17, 17, 0.8)', backdropFilter: 'blur(10px)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                            <div style={{ display: 'inline-flex', background: '#000', borderRadius: '30px', padding: '0.2rem', justifyContent: 'center', margin: '0 auto', border: '1px solid #333' }}>
                                 {['TODOS', 'HOMBRE', 'MUJER'].map((g) => (
                                     <button
                                         key={g}
                                         onClick={() => setGenero(g as 'TODOS' | 'HOMBRE' | 'MUJER')}
-                                        style={{ position: 'relative', padding: '0.8rem 2rem', background: 'transparent', color: genero === g ? 'black' : 'white', border: 'none', borderRadius: '30px', fontWeight: 'bold', cursor: 'pointer', zIndex: 1, transition: 'color 0.3s' }}
+                                        style={{ position: 'relative', padding: '0.8rem 2rem', background: 'transparent', color: genero === g ? 'black' : '#888', border: 'none', borderRadius: '30px', fontWeight: 'bold', cursor: 'pointer', zIndex: 1, transition: 'color 0.3s' }}
                                     >
                                         {genero === g && (
                                             <motion.div
@@ -123,7 +165,6 @@ export default function RopaClient({
                                 ))}
                             </div>
 
-                            {/* Filtro de Categoría */}
                             <div style={{ display: 'inline-flex', gap: '0.5rem', justifyContent: 'center', borderTop: '1px solid #333', paddingTop: '1.5rem', width: '100%', flexWrap: 'wrap' }}>
                                 {['TODOS', 'TOPS', 'BOTTOMS', 'ACCESORIOS'].map((cat) => (
                                     <button
@@ -144,15 +185,17 @@ export default function RopaClient({
                             </div>
                         </div>
 
-                        {/* GRID DE ROPA */}
+                        {/* GRID DE PRODUCTOS */}
                         <div className={styles.productGrid}>
-                            {initialProducts.filter(p => (genero === 'TODOS' || p.genero === genero) && (categoria === 'TODOS' || p.categoria === categoria)).map((prod) => (
+                            {productosFiltrados.map((prod) => (
                                 <RopaCard key={prod.id} product={prod} />
                             ))}
                         </div>
 
-                        {initialProducts.filter(p => (genero === 'TODOS' || p.genero === genero) && (categoria === 'TODOS' || p.categoria === categoria)).length === 0 && (
-                            <div style={{ textAlign: 'center', color: '#888', padding: '4rem' }}>NO HAY PRODUCTOS EN ESTA CATEGORÍA ACTUALMENTE.</div>
+                        {productosFiltrados.length === 0 && (
+                            <div style={{ textAlign: 'center', color: '#888', padding: '4rem', fontFamily: 'var(--font-mohave)', fontSize: '1.2rem', letterSpacing: '1px' }}>
+                                NO SE ENCONTRARON PRENDAS EN ESTA CATEGORÍA.
+                            </div>
                         )}
                     </motion.div>
                 )}
@@ -161,13 +204,14 @@ export default function RopaClient({
     );
 }
 
-/* --- COMPONENTE INTERNO: TARJETA DE ROPA CON CARRUSEL INFINITO --- */
+/* --- COMPONENTE INTERNO: TARJETA DE ROPA --- */
 function RopaCard({ product }: { product: ProductoRopa }) {
     const [selectedColor, setSelectedColor] = useState(product.colores[0]);
     const [selectedTalla, setSelectedTalla] = useState(selectedColor.tallas[0]);
     const [imgIndex, setImgIndex] = useState(0);
+    const { addToCart } = useCart(); // 👈 Traemos el carrito
 
-    // Lógica del Carrusel Infinito
+    // Carrusel Infinito
     const nextImg = (e: React.MouseEvent) => {
         e.stopPropagation();
         setImgIndex((prev) => (prev === selectedColor.imagenes.length - 1 ? 0 : prev + 1));
@@ -178,33 +222,51 @@ function RopaCard({ product }: { product: ProductoRopa }) {
         setImgIndex((prev) => (prev === 0 ? selectedColor.imagenes.length - 1 : prev - 1));
     };
 
+    // Función de agregar al carrito real
+    const handleAddToCart = () => {
+        addToCart({
+            id: selectedTalla.sku_id, // El ID único de esta combinación
+            nombre: product.nombre,
+            marca: product.marca,
+            sabor: selectedColor.nombre, // Usamos 'sabor' para guardar el Color en el carrito universal
+            tamano: selectedTalla.talla, // Usamos 'tamano' para guardar la Talla
+            precio: product.precio,
+            imagen_url: selectedColor.imagenes[0] || '',
+            cantidad: 1,
+            stock: selectedTalla.stock,
+        });
+    };
+
     return (
         <div className={styles.groupedCard}>
-            {/* CARRUSEL DE IMÁGENES */}
-            <div style={{ position: 'relative', width: '100%', height: '350px', background: '#1a1a1a', overflow: 'hidden' }}>
+            {/* CARRUSEL CON EFECTO CYBER-SCANNER */}
+            <div className={styles.imageBox} style={{ height: '350px' }}>
 
-                {/* Controles del Carrusel (Solo se muestran si hay más de 1 imagen) */}
+                {/* Controles del Carrusel */}
                 {selectedColor.imagenes.length > 1 && (
                     <>
-                        <button onClick={prevImg} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', zIndex: 10, background: 'rgba(0,0,0,0.5)', border: 'none', borderRadius: '50%', padding: '5px', cursor: 'pointer', color: 'white' }}>
+                        <button onClick={prevImg} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', zIndex: 20, background: 'rgba(0,0,0,0.5)', border: 'none', borderRadius: '50%', padding: '5px', cursor: 'pointer', color: 'white', backdropFilter: 'blur(4px)' }}>
                             <ChevronLeft size={24} />
                         </button>
-                        <button onClick={nextImg} style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', zIndex: 10, background: 'rgba(0,0,0,0.5)', border: 'none', borderRadius: '50%', padding: '5px', cursor: 'pointer', color: 'white' }}>
+                        <button onClick={nextImg} style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', zIndex: 20, background: 'rgba(0,0,0,0.5)', border: 'none', borderRadius: '50%', padding: '5px', cursor: 'pointer', color: 'white', backdropFilter: 'blur(4px)' }}>
                             <ChevronRight size={24} />
                         </button>
                     </>
                 )}
 
-                <img
-                    src={selectedColor.imagenes[imgIndex]}
+                {/* Usamos Next Image como en suplementos */}
+                <Image
+                    src={selectedColor.imagenes[imgIndex] || '/Vibefit-logo.png'}
                     alt={product.nombre}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} // 'cover' funciona mejor para ropa
+                    fill
+                    className={styles.prodImg}
+                    style={{ objectFit: 'cover', padding: '0' }} // En ropa queda mejor cover sin padding
                 />
 
                 {/* Indicador de imágenes (Puntitos) */}
-                <div style={{ position: 'absolute', bottom: 10, width: '100%', display: 'flex', justifyContent: 'center', gap: '5px' }}>
+                <div style={{ position: 'absolute', bottom: 15, width: '100%', display: 'flex', justifyContent: 'center', gap: '6px', zIndex: 20 }}>
                     {selectedColor.imagenes.map((_: string, idx: number) => (
-                        <div key={idx} style={{ width: '8px', height: '8px', borderRadius: '50%', background: imgIndex === idx ? 'var(--color-gold)' : 'rgba(255,255,255,0.3)' }} />
+                        <div key={idx} style={{ width: '8px', height: '8px', borderRadius: '50%', background: imgIndex === idx ? 'var(--color-gold)' : 'rgba(255,255,255,0.4)', transition: 'background 0.3s ease' }} />
                     ))}
                 </div>
             </div>
@@ -212,26 +274,29 @@ function RopaCard({ product }: { product: ProductoRopa }) {
             {/* INFORMACIÓN DEL PRODUCTO */}
             <div className={styles.info}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <h3 style={{ fontSize: '1.2rem', margin: '0 0 5px 0' }}>{product.nombre}</h3>
+                    <h3 style={{ margin: '0 0 5px 0' }}>{product.nombre}</h3>
                 </div>
-                <span style={{ color: '#888', fontSize: '0.8rem' }}>{selectedColor.nombre}</span>
+                <span style={{ color: '#888', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                    COLOR: <strong style={{ color: 'white' }}>{selectedColor.nombre}</strong>
+                </span>
 
-                {/* SELECTOR DE TALLAS TIPO PASTILLA */}
-                <div style={{ marginTop: '1rem', display: 'flex', gap: '10px' }}>
+                {/* SELECTOR DE TALLAS */}
+                <div style={{ marginTop: '1rem', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     {selectedColor.tallas.map((t: TallaRopa) => (
                         <button
                             key={t.talla}
                             onClick={() => setSelectedTalla(t)}
                             disabled={t.stock === 0}
                             style={{
-                                padding: '5px 12px',
+                                padding: '6px 14px',
                                 background: selectedTalla.talla === t.talla ? 'white' : 'transparent',
                                 color: selectedTalla.talla === t.talla ? 'black' : t.stock === 0 ? '#444' : '#aaa',
                                 border: selectedTalla.talla === t.talla ? '1px solid white' : '1px solid #444',
                                 borderRadius: '4px',
                                 cursor: t.stock === 0 ? 'not-allowed' : 'pointer',
                                 textDecoration: t.stock === 0 ? 'line-through' : 'none',
-                                fontWeight: 'bold'
+                                fontWeight: 'bold',
+                                transition: 'all 0.2s ease'
                             }}
                         >
                             {t.talla}
@@ -239,19 +304,27 @@ function RopaCard({ product }: { product: ProductoRopa }) {
                     ))}
                 </div>
 
+                {/* PRECIO Y STOCK DINÁMICO ESTILO SUPLEMENTOS */}
                 <div className={styles.priceRow}>
                     <span className={styles.price}>${product.precio.toLocaleString('es-MX')}</span>
-                    <span className={styles.stock} style={{ color: selectedTalla.stock > 0 ? '#4ade80' : '#ff4444' }}>
-                        {selectedTalla.stock > 0 ? `${selectedTalla.stock} DISPONIBLES` : 'AGOTADO'}
-                    </span>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+                        <span className={styles.stock} style={{ color: selectedTalla.stock > 0 ? '#4ade80' : '#ff4444' }}>
+                            {selectedTalla.stock > 0 ? `DISPONIBLES: ${selectedTalla.stock}` : 'AGOTADO'}
+                        </span>
+                        {selectedTalla.stock > 0 && selectedTalla.stock <= 3 && (
+                            <span className={styles.lowStockBadge}>
+                                ¡SOLO QUEDAN {selectedTalla.stock}!
+                            </span>
+                        )}
+                    </div>
                 </div>
 
                 <button
                     className={styles.addCartBtn}
                     disabled={selectedTalla.stock === 0}
-                    onClick={() => alert(`Añadido: ${product.nombre} - ${selectedColor.nombre} - ${selectedTalla.talla}`)}
+                    onClick={handleAddToCart}
                 >
-                    <ShoppingCart size={18} /> AGREGAR AL CARRITO
+                    <ShoppingCart size={18} /> {selectedTalla.stock > 0 ? 'AGREGAR AL CARRITO' : 'AGOTADO'}
                 </button>
             </div>
         </div>
