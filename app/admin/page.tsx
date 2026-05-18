@@ -94,26 +94,30 @@ export default function AdminHubPage() {
                     gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
                     gap: '2rem'
                 }}>
-                    <div onClick={() => alert('Módulo en construcción... Pronto podrás ver el listado.')} style={{
-                        background: '#111',
-                        border: '1px solid #333',
-                        padding: '2rem',
-                        borderRadius: '12px',
-                        transition: 'all 0.3s',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '1.5rem',
-                        position: 'relative',
-                        overflow: 'hidden'
-                    }} className="hub-card">
-                        <LayoutDashboard color="white" size={40} />
-                        <div>
-                            <h2 style={{ color: 'white', fontSize: '1.5rem', marginBottom: '0.5rem' }}>INVENTARIO ROPA</h2>
-                            <p style={{ color: '#666', fontSize: '0.9rem' }}>Consulta y edición del catálogo de prendas existente.</p>
+
+                    {/* MODIFICADO: Conexión orgánica al módulo de administración y Outbound de prendas */}
+                    <Link href="/admin/inventario/ropa" style={{ textDecoration: 'none' }}>
+                        <div style={{
+                            background: '#111',
+                            border: '1px solid #333',
+                            padding: '2rem',
+                            borderRadius: '12px',
+                            transition: 'all 0.3s',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '1.5rem',
+                            position: 'relative',
+                            overflow: 'hidden'
+                        }} className="hub-card">
+                            <LayoutDashboard color="white" size={40} />
+                            <div>
+                                <h2 style={{ color: 'white', fontSize: '1.5rem', marginBottom: '0.5rem' }}>INVENTARIO ROPA</h2>
+                                <p style={{ color: '#666', fontSize: '0.9rem' }}>Consulta y edición del catálogo de prendas existente.</p>
+                            </div>
+                            <ChevronRight style={{ position: 'absolute', right: '20px', bottom: '20px', color: '#333' }} />
                         </div>
-                        <ChevronRight style={{ position: 'absolute', right: '20px', bottom: '20px', color: '#333' }} />
-                    </div>
+                    </Link>
 
                     <Link href="/admin/inventario/ropa/nuevo" style={{ textDecoration: 'none' }}>
                         <div style={{
