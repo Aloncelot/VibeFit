@@ -1,0 +1,96 @@
+.box {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: 1.5rem 3rem;
+  margin-top: 4rem;
+  padding: 2rem;
+  border: 1px solid var(--line-strong);
+  border-left: 6px solid var(--accent);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+.intro h2 {
+  font-size: var(--step-2);
+  text-transform: none;
+}
+
+.intro p {
+  max-width: 40ch;
+  margin-top: 0.6rem;
+  color: var(--text-muted);
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  font-size: var(--step--1);
+  font-weight: 600;
+}
+
+.field input {
+  height: 46px;
+  padding: 0 0.85rem;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+}
+
+.field input:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.field input::placeholder {
+  color: rgba(167, 232, 242, 0.45);
+}
+
+.form button {
+  justify-self: start;
+}
+
+.trap {
+  position: absolute;
+  left: -9999px;
+}
+
+.error {
+  grid-column: 1 / -1;
+  padding: 0.6rem 0.9rem;
+  border-left: 3px solid var(--danger);
+  background: rgba(255, 122, 107, 0.08);
+  font-size: var(--step--1);
+}
+
+.ok {
+  align-self: center;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--ok);
+  background: var(--bg);
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  .box {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+
+  .form {
+    grid-template-columns: 1fr;
+  }
+}

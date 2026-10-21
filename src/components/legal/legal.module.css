@@ -1,0 +1,122 @@
+.page {
+  padding-block: 3rem 1rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  gap: 2rem 4rem;
+  align-items: start;
+}
+
+.head {
+  position: sticky;
+  top: calc(var(--nav-height) + 1.5rem);
+}
+
+.head h1 {
+  font-size: clamp(1.8rem, 2.6vw, 2.3rem);
+}
+
+.head > p {
+  margin-top: 1rem;
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.toc ol {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 1.5rem;
+  padding-left: 1.2rem;
+  color: var(--text-muted);
+}
+
+.toc a:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+
+.body {
+  max-width: 72ch;
+}
+
+.body section {
+  padding-bottom: 2.25rem;
+  scroll-margin-top: calc(var(--nav-height) + 1rem);
+}
+
+.body h2 {
+  margin-bottom: 0.9rem;
+  font-size: var(--step-2);
+  text-transform: none;
+}
+
+.body h3 {
+  margin: 1.25rem 0 0.5rem;
+  font-size: var(--step-0);
+  font-stretch: 100%;
+}
+
+.body p,
+.body li {
+  color: rgba(240, 253, 255, 0.86);
+}
+
+.body p + p,
+.body p + ul,
+.body ul + p,
+.body table + p,
+.body p + table {
+  margin-top: 0.9rem;
+}
+
+.body ul {
+  display: grid;
+  gap: 0.4rem;
+  padding-left: 1.2rem;
+}
+
+.body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.body code {
+  font-size: 0.9em;
+  color: var(--soft-cyan);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--step--1);
+}
+
+.table th,
+.table td {
+  padding: 0.7rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table th {
+  border-bottom: 2px solid var(--accent);
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .head {
+    position: static;
+  }
+
+  .table {
+    display: block;
+    overflow-x: auto;
+  }
+}

@@ -1,0 +1,372 @@
+/* Las recetas viven sobre Pale Cyan: la cocina es la parte clara de la marca. */
+
+.page {
+  background: var(--pale-cyan);
+  color: var(--deep-blue);
+  padding-block: 3rem 5rem;
+  margin-bottom: -6rem; /* el pie de página empieza justo al terminar el fondo claro */
+}
+
+.page + * {
+  margin-top: 0;
+}
+
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 1.5rem 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 3px solid var(--deep-blue);
+}
+
+.intro p {
+  max-width: 48ch;
+  color: rgba(6, 24, 38, 0.78);
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.tabs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1rem;
+  border: 2px solid var(--deep-blue);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+.tabs a:hover {
+  background: rgba(1, 186, 239, 0.15);
+}
+
+.tabs a[aria-current] {
+  background: var(--deep-blue);
+  color: var(--pale-cyan);
+}
+
+.list {
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr) 16rem;
+  gap: 1rem 2.5rem;
+  padding-block: 2rem;
+  border-bottom: 1px solid rgba(6, 24, 38, 0.18);
+}
+
+.date {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: rgba(6, 24, 38, 0.6);
+}
+
+.goal {
+  display: inline-block;
+  margin-top: 0.4rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  background: var(--deep-blue);
+  color: var(--pale-cyan);
+  font-size: var(--step--1);
+  font-weight: 700;
+}
+
+.goal[data-objetivo='definicion'] {
+  background: var(--dark-cyan);
+}
+
+.rowTitle {
+  font-size: var(--step-3);
+  text-transform: uppercase;
+}
+
+.rowTitle a {
+  background-image: linear-gradient(var(--vibrant-cyan), var(--vibrant-cyan));
+  background-size: 0 4px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.25s ease;
+}
+
+.rowTitle a:hover {
+  background-size: 100% 4px;
+}
+
+.rowSummary {
+  max-width: 60ch;
+  margin-top: 0.6rem;
+  color: rgba(6, 24, 38, 0.78);
+}
+
+.kcal {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.kcal :global(.num) {
+  font-size: var(--step-3);
+  line-height: 1;
+}
+
+/* ---------- Barra de macros ---------- */
+
+.macros,
+.macrosLg {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.bar {
+  display: flex;
+  height: 14px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: rgba(6, 24, 38, 0.1);
+}
+
+.macrosLg .bar {
+  height: 28px;
+}
+
+.segP {
+  background: var(--vibrant-cyan);
+}
+
+.segC {
+  background: var(--dark-cyan);
+}
+
+.segG {
+  background: var(--soft-cyan);
+  box-shadow: inset 0 0 0 1px rgba(6, 24, 38, 0.2);
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  gap: 0.25rem 1.25rem;
+  font-size: var(--step--1);
+}
+
+.legend dt {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(6, 24, 38, 0.7);
+}
+
+.legend dd {
+  font-size: var(--step-0);
+}
+
+.macrosLg .legend dd {
+  font-size: var(--step-2);
+}
+
+.swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+/* ---------- Detalle ---------- */
+
+.back {
+  display: inline-flex;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.detailHead {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 2rem 3rem;
+  align-items: end;
+  padding-bottom: 2.5rem;
+  border-bottom: 3px solid var(--deep-blue);
+}
+
+.detailHead h1 {
+  margin-top: 0.75rem;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+}
+
+.detailHead p {
+  max-width: 52ch;
+  margin-top: 1rem;
+  color: rgba(6, 24, 38, 0.78);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.panel {
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  background: var(--deep-blue);
+  color: var(--pale-cyan);
+}
+
+.panel .bar {
+  background: rgba(240, 253, 255, 0.12);
+}
+
+.panel .legend dt {
+  color: var(--soft-cyan);
+}
+
+.panel .segG {
+  box-shadow: none;
+}
+
+.panelKcal {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(167, 232, 242, 0.2);
+}
+
+.panelKcal :global(.num) {
+  font-size: var(--step-5);
+  line-height: 0.9;
+  color: var(--vibrant-cyan);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: 3rem;
+  padding-top: 2.5rem;
+}
+
+.columns h2 {
+  margin-bottom: 1rem;
+  font-size: var(--step-2);
+}
+
+.ingredients {
+  padding: 0;
+  list-style: none;
+}
+
+.ingredients li {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 1rem;
+  padding-block: 0.6rem;
+  border-bottom: 1px solid rgba(6, 24, 38, 0.15);
+}
+
+.ingredients strong {
+  font-weight: 700;
+}
+
+.steps {
+  padding: 0;
+  list-style: none;
+  counter-reset: paso;
+}
+
+.steps li {
+  position: relative;
+  max-width: 62ch;
+  padding: 0 0 1.4rem 3.5rem;
+  counter-increment: paso;
+}
+
+.steps li::before {
+  content: counter(paso);
+  position: absolute;
+  left: 0;
+  top: -0.2rem;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: var(--radius-sm);
+  background: var(--deep-blue);
+  color: var(--pale-cyan);
+  font-family: var(--font-display);
+  font-stretch: 112%;
+  font-weight: 800;
+}
+
+.tip {
+  max-width: 62ch;
+  margin-top: 0.5rem;
+  padding: 1rem 1.25rem;
+  border-left: 4px solid var(--vibrant-cyan);
+  background: rgba(1, 186, 239, 0.1);
+}
+
+.tip strong {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.shop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding: 1.5rem;
+  border: 2px solid var(--deep-blue);
+  border-radius: var(--radius-md);
+}
+
+.shop p {
+  font-weight: 600;
+}
+
+.shop a {
+  background: var(--deep-blue);
+  color: var(--pale-cyan);
+}
+
+.shop a:hover {
+  background: var(--dark-cyan);
+}
+
+@media (max-width: 860px) {
+  .intro,
+  .detailHead,
+  .columns {
+    grid-template-columns: 1fr;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .ingredients li {
+    grid-template-columns: 7rem 1fr;
+  }
+}

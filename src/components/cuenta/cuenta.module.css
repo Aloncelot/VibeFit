@@ -1,0 +1,315 @@
+/* ---------- Entrar / registro ---------- */
+
+.authPage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+  align-items: start;
+  gap: 2.5rem 4rem;
+  padding-block: 3.5rem 2rem;
+}
+
+.authIntro h1 {
+  font-size: clamp(2rem, 5vw, 3.6rem);
+}
+
+.authIntro p {
+  max-width: 44ch;
+  margin-top: 1rem;
+  color: var(--text-muted);
+  font-size: var(--step-1);
+}
+
+.form {
+  display: grid;
+  gap: 1.1rem;
+  padding: 2rem 1.75rem;
+  border: 1px solid var(--line-strong);
+  border-top: 6px solid var(--accent);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.field label {
+  font-weight: 600;
+}
+
+.field input {
+  height: 50px;
+  padding: 0 0.9rem;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+}
+
+.field input:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.help {
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.error {
+  padding: 0.7rem 0.9rem;
+  border-left: 3px solid var(--danger);
+  background: rgba(255, 122, 107, 0.08);
+  font-size: var(--step--1);
+  font-weight: 600;
+}
+
+.switch {
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.switch a {
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- Mi cuenta ---------- */
+
+.cuenta {
+  padding-block: 3rem 1rem;
+}
+
+.cuentaHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.section {
+  padding-block: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.section h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  font-size: var(--step-2);
+}
+
+.section h2 :global(.num) {
+  font-size: var(--step-0);
+  color: var(--accent);
+}
+
+.empty {
+  color: var(--text-muted);
+}
+
+.status {
+  margin-bottom: 1rem;
+  padding: 0.6rem 0.9rem;
+  border-left: 3px solid var(--accent);
+  background: var(--bg-raised);
+  font-size: var(--step--1);
+}
+
+.notifs {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.notifs li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+}
+
+.notifs li[data-nueva] {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.notifs time {
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.items {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem 1.25rem;
+  padding: 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+.thumb {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius-sm);
+  background: var(--pale-cyan);
+  overflow: hidden;
+}
+
+.item[data-agotado] .thumb {
+  opacity: 0.5;
+  filter: grayscale(1);
+}
+
+.brand {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--soft-cyan);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-stretch: 112%;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.variant {
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.priceLine {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-top: 0.3rem;
+}
+
+.priceLine :global(.num) {
+  color: var(--accent);
+}
+
+.in {
+  font-size: var(--step--1);
+  color: var(--ok);
+  font-weight: 600;
+}
+
+.out {
+  font-size: var(--step--1);
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.itemActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-muted);
+  font-size: var(--step--1);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.link:hover {
+  color: var(--text);
+}
+
+@media (max-width: 760px) {
+  .authPage {
+    grid-template-columns: 1fr;
+  }
+
+  .item {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .thumb {
+    width: 72px;
+    height: 72px;
+  }
+
+  .itemActions {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+}
+
+.danger {
+  margin-top: 1rem;
+  border-color: rgba(255, 122, 107, 0.6);
+  color: var(--danger);
+}
+
+.dangerSolid {
+  background: var(--danger);
+  color: var(--deep-blue);
+}
+
+.dangerSolid:hover {
+  background: #ff9a8e;
+}
+
+.deleteForm {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 420px;
+  margin-top: 1rem;
+}
+
+.deleteForm input {
+  height: 46px;
+  padding: 0 0.85rem;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+}
+
+.deleteForm div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.legalNote {
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.legalNote a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

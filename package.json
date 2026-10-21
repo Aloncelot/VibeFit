@@ -7,39 +7,38 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "db:migrar": "node --env-file=.env.local scripts/migrar-db.mjs",
+    "db:importar-catalogo": "node --env-file=.env.local scripts/importar-catalogo.mjs",
+    "db:migrar-imagenes": "node --env-file=.env.local scripts/migrar-imagenes.mjs",
+    "db:migrar-imagenes-iherb": "node --env-file=.env.local scripts/migrar-imagenes-iherb.mjs",
+    "db:migrar-logos": "node --env-file=.env.local scripts/migrar-logos.mjs"
   },
   "dependencies": {
     "@azure-rest/ai-vision-image-analysis": "^1.0.0-beta.3",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.0",
-    "animejs": "^4.3.6",
     "cloudinary": "^2.9.0",
     "csv-parser": "^3.2.0",
-    "dotenv": "^17.4.2",
     "framer-motion": "^12.38.0",
     "html5-qrcode": "^2.3.8",
     "lucide-react": "^1.8.0",
     "mssql": "^12.3.1",
-    "next": "16.2.4",
+    "next": "^16.4.2",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-webcam": "^7.2.0",
-    "recharts": "^3.8.1",
-    "sass": "^1.99.0",
-    "three": "^0.184.0"
+    "recharts": "^3.8.1"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/animejs": "^3.1.13",
     "@types/mssql": "^12.3.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@types/three": "^0.184.0",
     "eslint": "^9",
-    "eslint-config-next": "16.2.4",
-    "tailwindcss": "^4",
+    "eslint-config-next": "^16.4.2",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.9.0"
   }
 }

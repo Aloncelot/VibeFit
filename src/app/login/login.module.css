@@ -1,0 +1,76 @@
+.page {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: var(--gutter);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 79px, rgba(167, 232, 242, 0.05) 79px 80px),
+    var(--bg);
+}
+
+.panel {
+  width: 100%;
+  min-width: 0;
+  max-width: 420px;
+  padding: 2.5rem 2rem;
+  border: 1px solid var(--line-strong);
+  border-top: 6px solid var(--accent);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: 1.4rem;
+}
+
+.title {
+  margin-top: 1.75rem;
+  font-size: clamp(1.4rem, 5.5vw, var(--step-3));
+  font-stretch: 112%;
+}
+
+.help {
+  margin-top: 0.5rem;
+  color: var(--text-muted);
+}
+
+.form {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 2rem;
+}
+
+.form label {
+  font-weight: 600;
+}
+
+.form input {
+  height: 52px;
+  padding: 0 1rem;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  font-size: var(--step-1);
+}
+
+.form input:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form input[aria-invalid] {
+  border-color: var(--danger);
+}
+
+.form button {
+  margin-top: 0.75rem;
+}
+
+.error {
+  color: var(--danger);
+  font-weight: 600;
+  font-size: var(--step--1);
+}

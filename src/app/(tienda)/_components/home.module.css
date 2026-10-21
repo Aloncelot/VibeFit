@@ -1,0 +1,356 @@
+/* ---------- Hero ---------- */
+
+.hero {
+  padding-top: clamp(2.5rem, 6vw, 5rem);
+  overflow: hidden;
+}
+
+.title {
+  max-width: 18ch;
+  font-size: clamp(2.4rem, 5.6vw, 4.9rem);
+  line-height: 0.95;
+}
+
+.lead {
+  max-width: 56ch;
+  margin-top: 1.25rem;
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* ---------- Barra cargada ---------- */
+
+.barbell {
+  --plate-max: 320px;
+  --plate-w: 124px;
+  position: relative;
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.rod {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--plate-max) / 2 - 9px);
+  height: 18px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to bottom,
+    #5d8496 0%,
+    #cfeef5 35%,
+    #a7c9d4 60%,
+    #4b7184 100%
+  );
+}
+
+.load {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+}
+
+.collar {
+  flex: none;
+  width: 30px;
+  height: 84px;
+  margin-top: calc(var(--plate-max) / 2 - 42px);
+  margin-right: 10px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #2c5a6e, #7fb2c2 45%, #2c5a6e);
+}
+
+.plates {
+  display: flex;
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.plates li {
+  display: flex;
+  animation: loadPlate 0.55s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+  animation-delay: calc(0.15s + var(--i) * 0.09s);
+}
+
+@keyframes loadPlate {
+  from {
+    transform: translateX(80px);
+    opacity: 0;
+  }
+}
+
+.plate {
+  display: grid;
+  grid-template-rows: var(--plate-max) auto;
+  justify-items: center;
+  width: var(--plate-w);
+}
+
+.slab {
+  --tone: var(--vibrant-cyan);
+  --ink: var(--deep-blue);
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: calc(var(--size) * var(--plate-max));
+  border-radius: 10px;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(6, 24, 38, 0.2) 0 6%,
+      transparent 6% 94%,
+      rgba(6, 24, 38, 0.2) 94%
+    ),
+    var(--tone);
+  color: var(--ink);
+  transition: transform 0.18s ease;
+}
+
+.plate[data-tone='soft'] .slab {
+  --tone: var(--soft-cyan);
+}
+
+.plate[data-tone='pale'] .slab {
+  --tone: var(--pale-cyan);
+}
+
+.plate[data-tone='dark'] .slab {
+  --tone: var(--dark-cyan);
+  --ink: var(--pale-cyan);
+  box-shadow: inset 0 0 0 1px rgba(167, 232, 242, 0.35);
+}
+
+.stamp {
+  font-size: 2rem;
+  font-weight: 900;
+  font-stretch: 125%;
+  line-height: 1;
+}
+
+.slabLabel {
+  display: none;
+}
+
+.caption {
+  display: grid;
+  justify-items: center;
+  gap: 0.1rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.captionLabel {
+  font-weight: 700;
+  font-size: var(--step-0);
+}
+
+.captionCount {
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.plate:hover .slab {
+  transform: translateY(-6px);
+}
+
+.plate:hover .captionLabel {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 5px;
+}
+
+.plate:focus-visible {
+  outline: none;
+}
+
+.plate:focus-visible .slab {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+
+@media (max-width: 960px) {
+  .barbell {
+    --plate-max: 300px;
+    --plate-w: 104px;
+  }
+
+  .stamp {
+    font-size: 1.6rem;
+  }
+}
+
+/* En móvil la barra se para: los discos quedan apilados y centrados en ella. */
+@media (max-width: 640px) {
+  .rod {
+    left: 50%;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    width: 16px;
+    height: auto;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #5d8496 0%, #cfeef5 35%, #a7c9d4 60%, #4b7184 100%);
+  }
+
+  .load {
+    flex-direction: column;
+    align-items: center;
+    padding-block: 0 1rem;
+  }
+
+  .collar {
+    width: 84px;
+    height: 24px;
+    margin: 0 0 10px;
+    background: linear-gradient(to bottom, #2c5a6e, #7fb2c2 45%, #2c5a6e);
+  }
+
+  .plates {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .plates li {
+    justify-content: center;
+    width: 100%;
+    animation-name: loadPlateY;
+  }
+
+  .plate {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .slab {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(var(--size) * 100%);
+    min-width: 200px;
+    height: 72px;
+    padding: 0 1.1rem;
+    background:
+      linear-gradient(to right, rgba(6, 24, 38, 0.2) 0 10px, transparent 10px calc(100% - 10px), rgba(6, 24, 38, 0.2) calc(100% - 10px)),
+      var(--tone);
+  }
+
+  .slabLabel {
+    display: block;
+    font-weight: 700;
+    font-size: var(--step-1);
+  }
+
+  .stamp {
+    font-size: 1.5rem;
+  }
+
+  .caption {
+    display: none;
+  }
+
+  .plate:hover .slab {
+    transform: none;
+  }
+}
+
+@keyframes loadPlateY {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+}
+
+/* ---------- Marcas ---------- */
+
+.brands {
+  padding-top: 5rem;
+}
+
+.sectionTitle {
+  margin-bottom: 1.25rem;
+  font-size: var(--step-2);
+}
+
+/* ---------- Receta destacada ---------- */
+
+.recipe {
+  margin-top: 5rem;
+  background: var(--pale-cyan);
+  color: var(--deep-blue);
+}
+
+.recipeInner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 2.5rem 4rem;
+  padding-block: clamp(3rem, 7vw, 5rem);
+}
+
+.recipeKicker {
+  font-weight: 700;
+  color: var(--dark-cyan);
+}
+
+.recipeTitle {
+  margin-top: 0.5rem;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+}
+
+.recipeSummary {
+  max-width: 50ch;
+  margin-top: 1rem;
+  color: rgba(6, 24, 38, 0.78);
+}
+
+.recipeLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+
+.recipeCta {
+  background: var(--deep-blue);
+  color: var(--pale-cyan);
+}
+
+.recipeCta:hover {
+  background: var(--dark-cyan);
+}
+
+.recipeAll {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.recipeMacros {
+  display: grid;
+  gap: 1rem;
+  padding: 1.5rem;
+  border: 3px solid var(--deep-blue);
+  border-radius: var(--radius-md);
+}
+
+.recipeMacros > p {
+  font-weight: 600;
+}
+
+.recipeMacros > p :global(.num) {
+  display: block;
+  font-size: var(--step-5);
+  line-height: 0.95;
+}
+
+@media (max-width: 860px) {
+  .recipeInner {
+    grid-template-columns: 1fr;
+  }
+}

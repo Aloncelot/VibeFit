@@ -1,0 +1,394 @@
+.drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: min(440px, 100vw);
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid var(--line-strong);
+  background: var(--bg-raised);
+  color: var(--text);
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), overlay 0.28s allow-discrete, display 0.28s allow-discrete;
+}
+
+.drawer[open] {
+  transform: translateX(0);
+}
+
+@starting-style {
+  .drawer[open] {
+    transform: translateX(100%);
+  }
+}
+
+.drawer::backdrop {
+  background: rgba(3, 12, 19, 0.7);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.head h2 {
+  font-size: var(--step-2);
+}
+
+.iconButton {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+}
+
+.iconButton:hover {
+  background: var(--surface);
+}
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.lines {
+  padding: 0;
+  list-style: none;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 0.9rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.thumb {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-sm);
+  background: var(--pale-cyan);
+  overflow: hidden;
+}
+
+.info {
+  min-width: 0;
+}
+
+.brand {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.name {
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.variant {
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.lineFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.6rem;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+}
+
+.stepper button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+}
+
+.stepper button:hover:not(:disabled) {
+  background: var(--surface);
+}
+
+.stepper button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.stepper span {
+  min-width: 2ch;
+  text-align: center;
+}
+
+.linePrice {
+  font-size: var(--step-0);
+}
+
+.lineActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.6rem;
+}
+
+.lineActions button,
+.alertOn button,
+.saved button,
+.textLink {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-muted);
+  font-size: var(--step--1);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lineActions button:hover,
+.alertOn button:hover,
+.saved button:hover,
+.textLink:hover {
+  color: var(--text);
+}
+
+/* Producto agotado dentro del carrito */
+.lineOut .thumb {
+  opacity: 0.45;
+  filter: grayscale(1);
+}
+
+.lineOut .name,
+.lineOut .brand,
+.lineOut .variant {
+  opacity: 0.7;
+}
+
+.outBadge {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 3px;
+  background: rgba(255, 122, 107, 0.15);
+  color: var(--danger);
+  font-size: var(--step--1);
+  font-weight: 700;
+}
+
+.notify {
+  min-height: 40px;
+  margin-top: 0.6rem;
+  padding: 0 0.9rem;
+  font-size: var(--step--1);
+}
+
+.alertOn {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+  color: var(--ok);
+  font-size: var(--step--1);
+  font-weight: 600;
+}
+
+/* Guardado para después */
+.saved {
+  padding: 1.1rem 1.25rem 1.5rem;
+}
+
+.saved h3 {
+  margin-bottom: 0.6rem;
+  font-size: var(--step-0);
+  text-transform: none;
+}
+
+.saved ul {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0;
+  list-style: none;
+}
+
+.saved li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: var(--step--1);
+}
+
+.saved small {
+  color: var(--text-muted);
+}
+
+.out {
+  flex: none;
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.textLink {
+  display: inline-block;
+  margin-top: 0.75rem;
+}
+
+.account {
+  margin-top: 0.9rem;
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.account a {
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.foot {
+  padding: 1.1rem 1.25rem 1.4rem;
+  border-top: 1px solid var(--line-strong);
+  background: var(--bg);
+}
+
+.totals {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.totals div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.totals dt {
+  color: var(--text-muted);
+}
+
+.grand {
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--line);
+  font-size: var(--step-1);
+}
+
+.grand dt {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.note {
+  margin-top: 0.4rem;
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.error {
+  margin: 0.8rem 1.25rem 0;
+  padding: 0.7rem 0.9rem;
+  border-left: 3px solid var(--danger);
+  background: rgba(255, 122, 107, 0.08);
+  font-size: var(--step--1);
+}
+
+.checkout {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.empty {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+  justify-items: start;
+  padding: 2rem 1.25rem;
+  color: var(--text-muted);
+}
+
+.emptyTitle {
+  font-family: var(--font-display);
+  font-stretch: 112%;
+  font-weight: 800;
+  font-size: var(--step-2);
+  color: var(--text);
+}
+
+.foot .error {
+  margin: 0.8rem 0 0;
+}
+
+/* Pago bloqueado hasta tener pasarela */
+.locked {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.lockedTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-stretch: 112%;
+  font-weight: 800;
+  font-size: var(--step-0);
+  color: var(--text);
+}
+
+.locked .checkout {
+  margin-top: 0;
+}
+
+.lockedBtn {
+  border-color: var(--line);
+  background: repeating-linear-gradient(-45deg, var(--bg) 0 8px, var(--bg-raised) 8px 16px);
+  color: var(--text-muted);
+}
+
+.lockedBtn:disabled {
+  opacity: 1;
+}
+
+/* En pantallas chicas todo el carrito hace scroll junto para que el pie no tape los productos. */
+@media (max-width: 520px), (max-height: 700px) {
+  .panel {
+    overflow-y: auto;
+  }
+
+  .scroll {
+    flex: none;
+    overflow: visible;
+  }
+}

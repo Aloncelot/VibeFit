@@ -1,0 +1,293 @@
+/* ---------- Estrellas ---------- */
+
+.estrellas {
+  display: inline-flex;
+  gap: 0.1em;
+  line-height: 1;
+}
+
+.estrella {
+  position: relative;
+  display: inline-block;
+}
+
+.estrellaFondo {
+  color: rgba(167, 232, 242, 0.25);
+}
+
+.estrellaRelleno {
+  position: absolute;
+  inset: 0 auto 0 0;
+  overflow: hidden;
+  color: #ffc94d;
+}
+
+/* ---------- Página ---------- */
+
+.page {
+  padding-block: 3rem 1rem;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 2.5rem 4rem;
+  align-items: start;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.resumen {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.promedio {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.promedio :global(.num) {
+  font-size: var(--step-5);
+  line-height: 0.9;
+}
+
+.promedio p {
+  color: var(--text-muted);
+}
+
+.barras {
+  display: grid;
+  gap: 0.35rem;
+  max-width: 360px;
+  padding: 0;
+  list-style: none;
+}
+
+.barras li {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr 2.5rem;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.barra {
+  height: 8px;
+  border-radius: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.barra span {
+  display: block;
+  height: 100%;
+  background: #ffc94d;
+}
+
+.formBox {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.75rem;
+  border: 1px solid var(--line-strong);
+  border-top: 6px solid var(--accent);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+.formBox h2 {
+  font-size: var(--step-2);
+  text-transform: none;
+}
+
+.formBox p {
+  color: var(--text-muted);
+}
+
+.formBox a {
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0;
+  border: 0;
+}
+
+.picker legend {
+  width: 100%;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.pickerStars {
+  display: flex;
+}
+
+.pickerStars label {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  font-size: 2rem;
+  line-height: 1;
+  color: rgba(167, 232, 242, 0.3);
+  cursor: pointer;
+}
+
+.pickerStars label[data-activa] {
+  color: #ffc94d;
+}
+
+.pickerStars label:has(input:focus-visible) {
+  outline: 3px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+.pickerLabel {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.label {
+  font-weight: 600;
+}
+
+.formBox textarea {
+  padding: 0.75rem 0.9rem;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  resize: vertical;
+}
+
+.formBox textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.formActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.error {
+  padding: 0.6rem 0.9rem;
+  border-left: 3px solid var(--danger);
+  background: rgba(255, 122, 107, 0.08);
+  font-size: var(--step--1);
+}
+
+.ok {
+  padding: 0.6rem 0.9rem;
+  border-left: 3px solid var(--ok);
+  background: var(--bg);
+  font-size: var(--step--1);
+  color: var(--text) !important;
+}
+
+/* ---------- Lista ---------- */
+
+.lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 1rem;
+  padding: 2.5rem 0 0;
+  list-style: none;
+}
+
+.card {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  padding: 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+.card blockquote {
+  margin: 0;
+  font-size: var(--step-0);
+  line-height: 1.55;
+}
+
+.card footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.card footer strong {
+  color: var(--text);
+}
+
+.vacio {
+  padding-top: 2.5rem;
+  color: var(--text-muted);
+}
+
+/* ---------- Franja en portada ---------- */
+
+.franja {
+  padding-top: 5rem;
+}
+
+.franjaHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.franjaHead h2 {
+  font-size: var(--step-2);
+}
+
+.franjaHead p {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text-muted);
+}
+
+.franjaHead a {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.franja .lista {
+  padding-top: 1.25rem;
+}
+
+@media (max-width: 860px) {
+  .top {
+    grid-template-columns: 1fr;
+  }
+}
