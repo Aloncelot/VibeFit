@@ -12,6 +12,9 @@ export function conectarDB() {
       password: process.env.AZURE_SQL_PASSWORD,
       port: Number(process.env.AZURE_SQL_PORT || 1433),
       options: { encrypt: true, trustServerCertificate: false },
+      // Azure SQL serverless se pausa cuando no se usa; despertar puede tardar hasta ~1 minuto.
+      connectionTimeout: 60_000,
+      requestTimeout: 60_000,
     }).connect();
   }
   return poolPromise;
