@@ -10,6 +10,7 @@ import resenaStyles from '@/components/resenas/resenas.module.css';
 import BrandRail from '@/components/store/brand-rail';
 import MacroBar from '@/components/recetas/macro-bar';
 import Barbell, { type Disco } from './_components/barbell';
+import HeroMotion from './_components/hero-motion';
 import styles from './_components/home.module.css';
 
 async function getConteos() {
@@ -17,7 +18,7 @@ async function getConteos() {
     return await getConteosPortada();
   } catch (error) {
     // La portada se muestra aunque la base de datos no responda.
-    console.error('No se pudieron leer los conteos de la portada:', error);
+    console.error('No se pudieron leer las marcas de la portada:', error);
     return null;
   }
 }
@@ -28,24 +29,19 @@ export default async function HomePage() {
   const receta = recetas[0];
 
   const discos: Disco[] = [
-    { href: '/suplementos', label: 'Suplementos', count: conteos?.suplementos, unit: 'productos', tone: 'vibrant', size: 1 },
-    { href: '/ropa', label: 'Ropa', count: conteos?.ropa, unit: 'prendas', tone: 'soft', size: 0.84 },
-    { href: '/accesorios', label: 'Accesorios', count: conteos?.accesorios, unit: 'accesorios', tone: 'pale', size: 0.7 },
-    { href: '/recetas', label: 'Recetas', count: recetas.length, unit: 'recetas', tone: 'dark', size: 0.56 },
+    { href: '/suplementos', label: 'Suplementos', tone: 'vibrant', size: 1 },
+    { href: '/ropa', label: 'Ropa', tone: 'soft', size: 0.84 },
+    { href: '/accesorios', label: 'Accesorios', tone: 'pale', size: 0.7 },
+    { href: '/recetas', label: 'Recetas', tone: 'dark', size: 0.56 },
   ];
 
   return (
     <>
       <section className={styles.hero} aria-labelledby="hero-titulo">
-        <div className="container">
-          <h1 id="hero-titulo" className={styles.title}>
-            Equipo y nutrición para entrenar pesado
-          </h1>
-          <p className={styles.lead}>
-            Suplementos originales, ropa de Gymshark, YoungLA y Darc Sport, accesorios para el gym y recetas con los macros
-            contados. Si aparece en la tienda, está en existencia.
-          </p>
-        </div>
+        <HeroMotion
+          titulo="Equipo y nutrición para entrenar pesado"
+          texto="Suplementos originales, ropa de Gymshark, YoungLA y Darc Sport, accesorios para el gym y recetas con los macros contados. Si aparece en la tienda, está en existencia."
+        />
         <Barbell discos={discos} />
       </section>
 
