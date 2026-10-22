@@ -19,7 +19,7 @@ npm run dev
 | --- | --- |
 | `npm run dev` / `build` / `start` | Desarrollo, build de producción y servidor |
 | `npm run lint` · `npm run typecheck` | ESLint y TypeScript |
-| `npm run db:migrar` | Crea las tablas de clientes, listas, avisos, demanda, solicitudes y reseñas (se puede repetir) |
+| `npm run db:migrar` | Crea las tablas de clientes, listas, avisos, demanda, solicitudes, reseñas y recetas, y carga las recetas iniciales (se puede repetir) |
 | `npm run db:importar-catalogo -- --confirmar` | **Borra** SKUs/Productos e importa `scripts/data/catalogo.csv` |
 | `npm run db:migrar-imagenes` | Sube a Cloudinary las imágenes de SKUs que aún no están ahí |
 | `npm run db:migrar-imagenes-iherb` | Igual, desde `scripts/data/iherb-imagenes.csv` |
@@ -40,7 +40,7 @@ src/
     store/               # Header, carrito, tarjetas y filtros del catálogo
     recetas/             # Barra de macros y estilos de recetas
     admin/               # Escáner (código de barras + OCR)
-  content/recetas.ts     # Recetas publicadas (agrega una nueva aquí)
+  content/recetas.ts     # Tipos y utilidades de recetas (los datos viven en Azure SQL)
   context/cart-context.tsx
   lib/                   # Utilidades compartidas (formato, validación, imágenes)
   server/
@@ -67,4 +67,4 @@ scripts/                 # Scripts de base de datos y CSVs
 
 ## Publicar una receta
 
-Agrega un objeto al inicio de `RECETAS` en `src/content/recetas.ts` (título, objetivo `definicion` o `volumen`, macros por porción, ingredientes y pasos). La página se genera sola en `/recetas/<slug>`.
+Entra a **Panel → Recetas → Nueva receta**. Las recetas se guardan en la tabla `Recetas` de Azure SQL y la foto en Cloudinary (carpeta `vibefit/recetas`, requiere las variables `CLOUDINARY_*`). Al guardar, la tienda se actualiza sola en `/recetas/<dirección>` y la más reciente aparece en la portada. Ocultar quita la receta de la tienda sin borrarla.

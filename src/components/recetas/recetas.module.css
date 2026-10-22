@@ -257,6 +257,25 @@
   color: var(--vibrant-cyan);
 }
 
+.photo {
+  position: relative;
+  aspect-ratio: 21 / 9;
+  margin: 2.5rem 0 0;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--soft-cyan);
+}
+
+.photo img {
+  object-fit: cover;
+}
+
+@media (max-width: 700px) {
+  .photo {
+    aspect-ratio: 4 / 3;
+  }
+}
+
 .columns {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BarChart3, BellRing, Boxes, MessageSquareText, PackagePlus, Shirt, ScanLine, Star, Tags } from 'lucide-react';
+import { BarChart3, BellRing, Boxes, ChefHat, MessageSquareText, PackagePlus, Shirt, ScanLine, Star, Tags } from 'lucide-react';
 import { refrescarTienda } from './actions';
 import styles from './admin.module.css';
 
@@ -36,6 +36,12 @@ const GRUPOS = [
         texto: 'Productos que los clientes piden y no encuentran en la tienda.',
       },
       { href: '/admin/resenas', icon: Star, titulo: 'Reseñas', texto: 'Modera las reseñas que aparecen en la tienda.' },
+    ],
+  },
+  {
+    titulo: 'Contenido',
+    items: [
+      { href: '/admin/recetas', icon: ChefHat, titulo: 'Recetas', texto: 'Publica, edita u oculta las recetas fit de la tienda.' },
     ],
   },
 ];

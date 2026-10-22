@@ -16,7 +16,13 @@ const nextConfig: NextConfig = {
   // mssql no se empaqueta: se carga una sola vez desde node_modules.
   // Si se empaqueta, páginas y Server Actions reciben copias distintas y
   // `sql.Int` deja de reconocerse ("type.validate is not a function").
-  serverExternalPackages: ['mssql'],
+  serverExternalPackages: ['mssql', 'cloudinary'],
+  experimental: {
+    serverActions: {
+      // Fotos de recetas: el navegador las reduce antes de subir; 4 MB deja margen.
+      bodySizeLimit: '4mb',
+    },
+  },
   // Permite probar en el celular dentro de la red local (solo desarrollo).
   allowedDevOrigins: ['192.168.0.5'],
 

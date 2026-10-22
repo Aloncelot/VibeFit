@@ -273,3 +273,16 @@ a.card:hover {
   font-size: 0.75rem;
   font-weight: 700;
 }
+
+.ok {
+  max-width: 70ch;
+  margin-bottom: 1.5rem;
+  padding: 0.8rem 1rem;
+  border-left: 3px solid var(--ok);
+  background: var(--bg-raised);
+}
+
+/* Fila de algo oculto en la tienda: se atenúa el contenido, no los botones. */
+.oculta td:not(:last-child) {
+  opacity: 0.55;
+}

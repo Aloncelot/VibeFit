@@ -17,6 +17,7 @@ const LINKS = [
   { href: '/admin/demanda', label: 'Demanda' },
   { href: '/admin/solicitudes', label: 'Solicitudes' },
   { href: '/admin/resenas', label: 'Reseñas' },
+  { href: '/admin/recetas', label: 'Recetas' },
   { href: '/admin/inventario/escaner', label: 'Escáner' },
 ];
 

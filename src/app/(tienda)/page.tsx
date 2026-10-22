@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { connection } from 'next/server';
 import { getConteosPortada } from '@/server/queries/catalogo';
-import { RECETAS, OBJETIVOS } from '@/content/recetas';
+import { OBJETIVOS } from '@/content/recetas';
+import { getRecetas } from '@/server/queries/recetas';
 import { getResenasPublicas } from '@/server/queries/resenas';
 import Estrellas from '@/components/resenas/estrellas';
 import ListaResenas from '@/components/resenas/lista-resenas';
@@ -23,14 +24,14 @@ async function getConteos() {
 
 export default async function HomePage() {
   await connection(); // se renderiza por petición; los datos vienen del caché del catálogo
-  const [conteos, { resumen, resenas }] = await Promise.all([getConteos(), getResenasPublicas(3)]);
-  const receta = RECETAS[0];
+  const [conteos, { resumen, resenas }, recetas] = await Promise.all([getConteos(), getResenasPublicas(3), getRecetas()]);
+  const receta = recetas[0];
 
   const discos: Disco[] = [
     { href: '/suplementos', label: 'Suplementos', count: conteos?.suplementos, unit: 'productos', tone: 'vibrant', size: 1 },
     { href: '/ropa', label: 'Ropa', count: conteos?.ropa, unit: 'prendas', tone: 'soft', size: 0.84 },
     { href: '/accesorios', label: 'Accesorios', count: conteos?.accesorios, unit: 'accesorios', tone: 'pale', size: 0.7 },
-    { href: '/recetas', label: 'Recetas', count: RECETAS.length, unit: 'recetas', tone: 'dark', size: 0.56 },
+    { href: '/recetas', label: 'Recetas', count: recetas.length, unit: 'recetas', tone: 'dark', size: 0.56 },
   ];
 
   return (

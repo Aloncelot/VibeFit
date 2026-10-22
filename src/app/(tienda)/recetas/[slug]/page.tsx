@@ -1,30 +1,30 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { RECETAS, OBJETIVOS, formatFecha, getReceta } from '@/content/recetas';
+import Image from 'next/image';
+import { OBJETIVOS, formatFecha } from '@/content/recetas';
+import { getReceta } from '@/server/queries/recetas';
+import { shouldSkipOptimization } from '@/lib/images';
 import MacroBar from '@/components/recetas/macro-bar';
 import styles from '@/components/recetas/recetas.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
 
-// Las recetas se generan como páginas estáticas en el build.
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return RECETAS.map((r) => ({ slug: r.slug }));
-}
+// Las recetas vienen de Azure SQL (en caché hasta que el admin las edita), así que
+// una receta nueva tiene página en cuanto se publica, sin volver a hacer build.
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const receta = getReceta((await params).slug);
+  const receta = await getReceta((await params).slug);
   if (!receta) return {};
   return {
     title: receta.titulo,
     description: `${receta.resumen} ${receta.macros.proteina} g de proteína por porción.`,
+    openGraph: receta.imagen ? { images: [receta.imagen] } : undefined,
   };
 }
 
 export default async function RecetaPage({ params }: Props) {
-  const receta = getReceta((await params).slug);
+  const receta = await getReceta((await params).slug);
   if (!receta) notFound();
 
   const usaWhey = receta.ingredientes.some((i) => /whey/i.test(i.ingrediente));
@@ -60,6 +60,19 @@ export default async function RecetaPage({ params }: Props) {
             <MacroBar macros={receta.macros} size="lg" />
           </aside>
         </header>
+
+        {receta.imagen && (
+          <figure className={styles.photo}>
+            <Image
+              src={receta.imagen}
+              alt={receta.titulo}
+              fill
+              priority
+              sizes="(max-width: 1280px) 100vw, 1200px"
+              unoptimized={shouldSkipOptimization(receta.imagen)}
+            />
+          </figure>
+        )}
 
         <div className={styles.columns}>
           <section aria-labelledby="ingredientes">

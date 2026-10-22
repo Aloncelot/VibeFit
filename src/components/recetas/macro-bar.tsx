@@ -1,8 +1,8 @@
-import type { Receta } from '@/content/recetas';
+import type { Macros } from '@/content/recetas';
 import styles from './recetas.module.css';
 
 /** Barra proporcional a las calorías que aporta cada macro (P×4, C×4, G×9). */
-export default function MacroBar({ macros, size = 'md' }: { macros: Receta['macros']; size?: 'md' | 'lg' }) {
+export default function MacroBar({ macros, size = 'md' }: { macros: Macros; size?: 'md' | 'lg' }) {
   const kcalP = macros.proteina * 4;
   const kcalC = macros.carbohidratos * 4;
   const kcalG = macros.grasa * 9;

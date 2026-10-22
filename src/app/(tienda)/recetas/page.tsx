@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { RECETAS, OBJETIVOS, formatFecha, type Objetivo } from '@/content/recetas';
+import { OBJETIVOS, formatFecha, type Objetivo } from '@/content/recetas';
+import { getRecetas } from '@/server/queries/recetas';
 import MacroBar from '@/components/recetas/macro-bar';
 import styles from '@/components/recetas/recetas.module.css';
 
@@ -22,7 +23,8 @@ export default async function RecetasPage({
 }) {
   const { objetivo: raw } = await searchParams;
   const objetivo = raw === 'definicion' || raw === 'volumen' ? raw : undefined;
-  const recetas = objetivo ? RECETAS.filter((r) => r.objetivo === objetivo) : RECETAS;
+  const todas = await getRecetas();
+  const recetas = objetivo ? todas.filter((r) => r.objetivo === objetivo) : todas;
 
   return (
     <div className={styles.page}>
@@ -50,6 +52,8 @@ export default async function RecetasPage({
             </ul>
           </div>
         </header>
+
+        {recetas.length === 0 && <p className={styles.rowSummary}>Muy pronto publicaremos nuevas recetas.</p>}
 
         <ul className={styles.list}>
           {recetas.map((receta) => (
