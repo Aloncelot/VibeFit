@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { connection } from 'next/server';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { OBJETIVOS, formatFecha } from '@/content/recetas';
@@ -24,6 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function RecetaPage({ params }: Props) {
+  await connection(); // siempre por petición: nunca se publica una versión guardada sin recetas
   const receta = await getReceta((await params).slug);
   if (!receta) notFound();
 

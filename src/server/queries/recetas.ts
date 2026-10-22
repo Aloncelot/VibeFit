@@ -1,5 +1,5 @@
 import 'server-only';
-import { unstable_cache } from 'next/cache';
+import { cache } from 'react';
 import { getPool, sql } from '@/server/db';
 import type { Ingrediente, Objetivo, Receta, RecetaAdmin } from '@/content/recetas';
 
@@ -58,26 +58,24 @@ function aReceta(f: Fila): RecetaAdmin {
 
 /**
  * Recetas publicadas (visibles), la más reciente primero.
- * Se guardan en caché hasta que el admin crea, edita u oculta una receta.
- * Si la tabla aún no existe (falta `npm run db:migrar`), devuelve una lista vacía.
+ * Se leen de Azure SQL en cada visita (son pocas filas), igual que en el panel:
+ * así una receta nueva o editada aparece al momento y nunca se queda una lista vacía en caché.
+ * `cache` evita repetir la consulta dentro de una misma visita (metadata + página).
+ * Si la base no responde o falta la tabla, la página se muestra vacía en lugar de romperse.
  */
-export const getRecetas = unstable_cache(
-  async (): Promise<Receta[]> => {
-    try {
-      const pool = await getPool();
-      const r = await pool.request().query<Fila>(`
-        SELECT ${COLUMNAS} FROM Recetas WHERE visible = 1 ORDER BY publicada DESC, id DESC
-      `);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      return r.recordset.map(aReceta).map(({ visible, ...receta }) => receta);
-    } catch (error) {
-      console.error('No se pudieron leer las recetas:', error);
-      return [];
-    }
-  },
-  ['recetas-publicadas-v1'],
-  { tags: [RECETAS_TAG], revalidate: 3600 },
-);
+export const getRecetas = cache(async (): Promise<Receta[]> => {
+  try {
+    const pool = await getPool();
+    const r = await pool.request().query<Fila>(`
+      SELECT ${COLUMNAS} FROM Recetas WHERE visible = 1 ORDER BY publicada DESC, id DESC
+    `);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return r.recordset.map(aReceta).map(({ visible, ...receta }) => receta);
+  } catch (error) {
+    console.error('No se pudieron leer las recetas:', error);
+    return [];
+  }
+});
 
 export async function getReceta(slug: string): Promise<Receta | undefined> {
   return (await getRecetas()).find((r) => r.slug === slug);

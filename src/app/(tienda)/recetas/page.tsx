@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { connection } from 'next/server';
 import { OBJETIVOS, formatFecha, type Objetivo } from '@/content/recetas';
 import { getRecetas } from '@/server/queries/recetas';
 import MacroBar from '@/components/recetas/macro-bar';
@@ -21,6 +22,7 @@ export default async function RecetasPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  await connection(); // siempre por petición: nunca se publica una versión guardada sin recetas
   const { objetivo: raw } = await searchParams;
   const objetivo = raw === 'definicion' || raw === 'volumen' ? raw : undefined;
   const todas = await getRecetas();
