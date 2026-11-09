@@ -28,6 +28,9 @@ export default function HeroMotion({ titulo, texto, marcas }: { titulo: string; 
   return (
     <MotionConfig reducedMotion="user">
       <video className={styles.heroVideo} autoPlay muted loop playsInline preload="auto" poster="/hero/hero-poster.webp" aria-hidden>
+        {/* En celular: corte vertical y más ligero (~1 MB en lugar de ~4 MB). El navegador usa la primera fuente que aplica. */}
+        <source src="/hero/hero-movil.webm" type="video/webm" media="(max-width: 768px)" />
+        <source src="/hero/hero-movil.mp4" type="video/mp4" media="(max-width: 768px)" />
         <source src="/hero/hero.webm" type="video/webm" />
         <source src="/hero/hero.mp4" type="video/mp4" />
       </video>

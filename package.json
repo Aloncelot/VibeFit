@@ -13,7 +13,8 @@
     "db:importar-catalogo": "node --env-file=.env.local scripts/importar-catalogo.mjs",
     "db:migrar-imagenes": "node --env-file=.env.local scripts/migrar-imagenes.mjs",
     "db:migrar-imagenes-iherb": "node --env-file=.env.local scripts/migrar-imagenes-iherb.mjs",
-    "db:migrar-logos": "node --env-file=.env.local scripts/migrar-logos.mjs"
+    "db:migrar-logos": "node --env-file=.env.local scripts/migrar-logos.mjs",
+    "db:quitar-ropa": "node --env-file=.env.local scripts/quitar-ropa.mjs"
   },
   "dependencies": {
     "@azure-rest/ai-vision-image-analysis": "^1.0.0-beta.3",
