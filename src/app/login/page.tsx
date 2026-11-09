@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 import LoginForm from './login-form';
 import styles from './login.module.css';
 
@@ -22,9 +23,12 @@ export default async function LoginPage({
           VIBEFIT
         </Link>
         <h1 className={styles.title}>Panel de administración</h1>
-        <p className={styles.help}>Inventario, precios y escáner de etiquetas.</p>
+        <p className={styles.help}>Inventario, precios, recetas y clientes.</p>
         <LoginForm desde={typeof desde === 'string' ? desde : undefined} />
       </div>
+      <Link href="/" className={styles.back}>
+        <ArrowLeft size={18} aria-hidden /> Volver a la tienda
+      </Link>
     </main>
   );
 }

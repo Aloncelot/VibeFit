@@ -17,7 +17,6 @@ const LINKS = [
   { href: '/admin/solicitudes', label: 'Solicitudes' },
   { href: '/admin/resenas', label: 'Reseñas' },
   { href: '/admin/recetas', label: 'Recetas' },
-  { href: '/admin/inventario/escaner', label: 'Escáner' },
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {

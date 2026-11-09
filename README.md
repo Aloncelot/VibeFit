@@ -1,7 +1,7 @@
 # VIBEFIT
 
-Tienda de suplementos, ropa de gym, accesorios y recetas fit, con panel de inventario.
-Next.js 16 (App Router), React 19, Azure SQL (`mssql`), Azure AI Vision para OCR.
+Tienda de suplementos y recetas fit, con panel de inventario.
+Next.js 16 (App Router), React 19, Azure SQL (`mssql`).
 
 ## Puesta en marcha
 
@@ -30,8 +30,8 @@ npm run dev
 ```
 src/
   app/
-    (tienda)/            # Rutas públicas: portada, suplementos, ropa, accesorios, recetas
-      _components/       # Componentes privados de la portada (barra cargada)
+    (tienda)/            # Rutas públicas: portada, suplementos, recetas, cuenta
+      _components/       # Componentes privados de la portada (hero con video)
     admin/               # Panel protegido (layout valida la sesión)
     login/               # Acceso + Server Actions de sesión
     layout.tsx           # Fuentes (Archivo + Barlow) y estilos globales
@@ -39,7 +39,6 @@ src/
   components/
     store/               # Header, carrito, tarjetas y filtros del catálogo
     recetas/             # Barra de macros y estilos de recetas
-    admin/               # Escáner (código de barras + OCR)
   content/recetas.ts     # Tipos y utilidades de recetas (los datos viven en Azure SQL)
   context/cart-context.tsx
   lib/                   # Utilidades compartidas (formato, validación, imágenes)
@@ -47,7 +46,7 @@ src/
     db.ts                # Pool de Azure SQL + transacciones
     auth/                # Token firmado (HMAC) y capa de acceso (DAL)
     queries/             # Lecturas: catálogo público (con caché) y admin
-    actions/             # Server Actions compartidas (pedido, OCR)
+    actions/             # Server Actions compartidas (pedido, cuenta, listas)
   proxy.ts               # Redirige /admin a /login sin sesión válida
   types/
 scripts/                 # Scripts de base de datos y CSVs

@@ -1,11 +1,31 @@
 .page {
   display: grid;
-  place-items: center;
+  place-content: center;
+  justify-items: center;
   min-height: 100dvh;
   padding: var(--gutter);
   background:
     repeating-linear-gradient(90deg, transparent 0 79px, rgba(167, 232, 242, 0.05) 79px 80px),
     var(--bg);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding: 0.5rem 0.25rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.back:hover {
+  color: var(--text);
+}
+
+.back:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .panel {

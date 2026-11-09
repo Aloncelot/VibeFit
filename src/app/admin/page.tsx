@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BarChart3, BellRing, Boxes, ChefHat, MessageSquareText, ScanLine, Star, Tags } from 'lucide-react';
+import { BarChart3, BellRing, Boxes, ChefHat, MessageSquareText, Star, Tags } from 'lucide-react';
 import { refrescarTienda } from './actions';
 import styles from './admin.module.css';
 
@@ -10,7 +10,6 @@ const GRUPOS = [
       { href: '/admin/inventario', icon: Boxes, titulo: 'Inventario', texto: 'Stock, entradas de mercancía y precios por SKU.' },
       { href: '/admin/inventario/nuevo', icon: Tags, titulo: 'Alta de SKU', texto: 'Registra un producto, sabor o presentación nueva.' },
       { href: '/admin/analisis', icon: BarChart3, titulo: 'Análisis ABC', texto: 'Inversión por producto y tendencia de entradas.' },
-      { href: '/admin/inventario/escaner', icon: ScanLine, titulo: 'Escáner', texto: 'Lee el código de barras de un producto.' },
     ],
   },
   {
