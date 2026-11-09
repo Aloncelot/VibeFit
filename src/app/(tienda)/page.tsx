@@ -33,7 +33,13 @@ export default async function HomePage() {
       <section
         className={styles.hero}
         aria-labelledby="hero-titulo"
-        style={{ '--poster': 'url(/hero/hero-poster.webp)' } as React.CSSProperties}
+        style={
+          {
+            '--poster': 'url(/hero/hero-poster.webp)',
+            '--poster-movil': 'url(/hero/hero-movil-poster.webp)',
+            '--poster-tablet': 'url(/hero/hero-tablet-poster.webp)',
+          } as React.CSSProperties
+        }
       >
         <HeroMotion
           titulo="Suplementos originales para entrenar pesado"

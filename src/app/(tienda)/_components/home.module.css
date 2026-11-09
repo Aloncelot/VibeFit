@@ -31,6 +31,24 @@
     linear-gradient(to bottom, rgba(6, 24, 38, 0.3), rgba(6, 24, 38, 0.05) 45%, rgba(6, 24, 38, 0.55));
 }
 
+/* Imagen fija según la forma de la pantalla (las mismas proporciones que los videos). */
+@media (max-aspect-ratio: 6/5) {
+  .hero {
+    background-image: var(--poster-tablet);
+  }
+
+  /* En pantallas verticales el bote queda detrás del texto: más oscurecido para que se lea. */
+  .heroShade {
+    background: linear-gradient(to bottom, rgba(6, 24, 38, 0.7), rgba(6, 24, 38, 0.58) 55%, rgba(6, 24, 38, 0.85));
+  }
+}
+
+@media (max-aspect-ratio: 2/3) {
+  .hero {
+    background-image: var(--poster-movil);
+  }
+}
+
 .heroInner {
   display: grid;
   justify-items: center;
@@ -182,10 +200,6 @@
     grid-template-columns: 1fr;
   }
 
-  /* En celular el video queda detrás del texto: más oscurecido para que se lea. */
-  .heroShade {
-    background: linear-gradient(to bottom, rgba(6, 24, 38, 0.72), rgba(6, 24, 38, 0.62) 50%, rgba(6, 24, 38, 0.85));
-  }
 
   .heroSubmit {
     width: 100%;
@@ -194,7 +208,25 @@
 
 /* Sin movimiento: se queda la imagen fija del video. */
 @media (prefers-reduced-motion: reduce) {
-  .heroVideo {
+  /* Imagen fija según la forma de la pantalla (las mismas proporciones que los videos). */
+@media (max-aspect-ratio: 6/5) {
+  .hero {
+    background-image: var(--poster-tablet);
+  }
+
+  /* En pantallas verticales el bote queda detrás del texto: más oscurecido para que se lea. */
+  .heroShade {
+    background: linear-gradient(to bottom, rgba(6, 24, 38, 0.7), rgba(6, 24, 38, 0.58) 55%, rgba(6, 24, 38, 0.85));
+  }
+}
+
+@media (max-aspect-ratio: 2/3) {
+  .hero {
+    background-image: var(--poster-movil);
+  }
+}
+
+.heroVideo {
     display: none;
   }
 }

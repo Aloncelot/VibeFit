@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ChefHat, PackageCheck, Search, ShieldCheck } from 'lucide-react';
 import { motion, MotionConfig, type Transition, type Variants } from 'framer-motion';
@@ -17,6 +18,15 @@ const sube: Variants = {
   visible: { opacity: 1, y: 0, transition: resorte },
 };
 
+/**
+ * Un video por forma de pantalla (se elige por proporción, no por ancho):
+ * - celular vertical y pantalla externa de plegables (más alto que 2:3) → 720×1440, cámara más alejada
+ * - tablet vertical y plegables abiertos (hasta 6:5, casi cuadrado) → 1080×1350
+ * - computadora, tablet horizontal y celular horizontal → 1600×900
+ */
+const MEDIA_MOVIL = '(max-aspect-ratio: 2/3)';
+const MEDIA_TABLET = '(max-aspect-ratio: 6/5)';
+
 const GARANTIAS = [
   { icon: ShieldCheck, texto: 'Productos originales' },
   { icon: PackageCheck, texto: 'Solo lo que hay en existencia' },
@@ -25,12 +35,25 @@ const GARANTIAS = [
 
 /** Hero a pantalla completa: video de fondo, título, búsqueda por producto y marca. Respeta "reducir movimiento". */
 export default function HeroMotion({ titulo, texto, marcas }: { titulo: string; texto: string; marcas: string[] }) {
+  const video = useRef<HTMLVideoElement>(null);
+
+  // El navegador elige la fuente solo al cargar: si el celular gira o el plegable se abre, se vuelve a elegir.
+  useEffect(() => {
+    const consultas = [MEDIA_MOVIL, MEDIA_TABLET].map((q) => window.matchMedia(q));
+    const recargar = () => video.current?.load();
+    consultas.forEach((c) => c.addEventListener('change', recargar));
+    return () => consultas.forEach((c) => c.removeEventListener('change', recargar));
+  }, []);
+
   return (
     <MotionConfig reducedMotion="user">
-      <video className={styles.heroVideo} autoPlay muted loop playsInline preload="auto" poster="/hero/hero-poster.webp" aria-hidden>
-        {/* En celular: corte vertical y más ligero (~1 MB en lugar de ~4 MB). El navegador usa la primera fuente que aplica. */}
-        <source src="/hero/hero-movil.webm" type="video/webm" media="(max-width: 768px)" />
-        <source src="/hero/hero-movil.mp4" type="video/mp4" media="(max-width: 768px)" />
+      {/* Sin poster: mientras carga se ve la imagen fija de fondo de la sección, que también cambia según la pantalla. */}
+      <video ref={video} className={styles.heroVideo} autoPlay muted loop playsInline preload="auto" aria-hidden>
+        {/* El navegador usa la primera fuente que aplica. */}
+        <source src="/hero/hero-movil.webm" type="video/webm" media={MEDIA_MOVIL} />
+        <source src="/hero/hero-movil.mp4" type="video/mp4" media={MEDIA_MOVIL} />
+        <source src="/hero/hero-tablet.webm" type="video/webm" media={MEDIA_TABLET} />
+        <source src="/hero/hero-tablet.mp4" type="video/mp4" media={MEDIA_TABLET} />
         <source src="/hero/hero.webm" type="video/webm" />
         <source src="/hero/hero.mp4" type="video/mp4" />
       </video>
