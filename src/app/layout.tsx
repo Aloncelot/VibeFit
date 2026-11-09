@@ -20,11 +20,11 @@ const barlow = Barlow({
 
 export const metadata: Metadata = {
   title: {
-    default: 'VIBEFIT | Suplementos, ropa de gym y recetas fit',
+    default: 'VIBEFIT | Suplementos originales y recetas fit',
     template: '%s | VIBEFIT',
   },
   description:
-    'Suplementos originales, ropa de Gymshark, YoungLA y Darc Sport, accesorios de gimnasio y recetas altas en proteína.',
+    'Proteína, creatina, pre-entrenos y aminoácidos originales con existencia real, y recetas altas en proteína.',
 };
 
 export const viewport: Viewport = {

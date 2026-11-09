@@ -5,7 +5,7 @@
 import fs from 'node:fs';
 import { conectarDB } from './db.mjs';
 
-const POR_DEFECTO = ['sql-clientes-y-demanda.sql', 'sql-recetas.sql'].map((f) => new URL(`./${f}`, import.meta.url));
+const POR_DEFECTO = ['sql-clientes-y-demanda.sql', 'sql-recetas.sql', 'sql-recuperacion.sql'].map((f) => new URL(`./${f}`, import.meta.url));
 const archivos = process.argv[2] ? [process.argv[2]] : POR_DEFECTO;
 
 try {

@@ -11,7 +11,8 @@ export default async function EntrarPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const desde = rutaSegura((await searchParams).desde);
+  const params = await searchParams;
+  const desde = rutaSegura(params.desde);
   if (await getCliente()) redirect(desde);
 
   return (
@@ -20,7 +21,14 @@ export default async function EntrarPage({
         <h1>Entra a tu cuenta</h1>
         <p>Tu carrito se guarda en todos tus dispositivos, guardas favoritos y te avisamos cuando vuelve lo que está agotado.</p>
       </div>
-      <AuthForm modo="entrar" desde={desde} />
+      <div>
+        {params.restablecida === '1' && (
+          <p className={styles.ok} role="status">
+            Listo, tu contraseña se cambió. Entra con la nueva.
+          </p>
+        )}
+        <AuthForm modo="entrar" desde={desde} />
+      </div>
     </div>
   );
 }

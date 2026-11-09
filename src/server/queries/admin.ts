@@ -30,32 +30,6 @@ export async function getInventarioSuplementos(): Promise<InventarioItem[]> {
   return result.recordset;
 }
 
-export interface RopaItem {
-  id: number;
-  modelo: string;
-  marca: string;
-  color: string;
-  talla: string;
-  stock: number;
-  precio_proveedor: number;
-  precio_venta: number;
-}
-
-export async function getInventarioRopa(): Promise<RopaItem[]> {
-  await verifyAdmin();
-  const pool = await getPool();
-  const result = await pool.request().query<RopaItem>(`
-    SELECT s.id, p.nombre AS modelo, m.nombre AS marca, ISNULL(s.color, '') AS color,
-           ISNULL(s.tamano, '') AS talla, s.stock, s.precio_proveedor, s.precio_venta
-    FROM SKUs s
-    JOIN Productos p ON s.producto_id = p.id
-    JOIN Marcas m ON p.marca_id = m.id
-    WHERE p.categoria IN ('TOPS', 'BOTTOMS', 'ACCESORIOS')
-    ORDER BY m.nombre, p.nombre, s.color, s.tamano
-  `);
-  return result.recordset;
-}
-
 export async function getFormularioSKU() {
   await verifyAdmin();
   const pool = await getPool();
@@ -73,17 +47,6 @@ export async function getFormularioSKU() {
     productos: productos.recordset,
     tamanos: tamanos.recordset.map((t) => t.tamano),
   };
-}
-
-export async function getMarcasRopa() {
-  await verifyAdmin();
-  const pool = await getPool();
-  const result = await pool.request().query<{ id: number; nombre: string }>(`
-    SELECT id, nombre FROM Marcas
-    WHERE id NOT IN (SELECT DISTINCT marca_id FROM Productos WHERE categoria = 'Suplemento' AND marca_id IS NOT NULL)
-    ORDER BY nombre
-  `);
-  return result.recordset;
 }
 
 /* ----------------------------- Análisis ----------------------------- */

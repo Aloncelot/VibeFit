@@ -64,6 +64,21 @@
   font-weight: 600;
 }
 
+.ok {
+  margin-bottom: 1rem;
+  padding: 0.7rem 0.9rem;
+  border-left: 3px solid var(--accent);
+  background: rgba(1, 186, 239, 0.08);
+  font-size: var(--step--1);
+  font-weight: 600;
+}
+
+.olvide {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .switch {
   font-size: var(--step--1);
   color: var(--text-muted);

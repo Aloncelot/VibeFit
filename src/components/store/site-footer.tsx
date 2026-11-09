@@ -11,7 +11,7 @@ export default function SiteFooter() {
       <div className={`container ${styles.grid}`}>
         <div className={styles.brand}>
           <p className={styles.logo}>VIBEFIT</p>
-          <p>Suplementos originales, ropa de entrenamiento y recetas para comer con objetivo. Desde la Ciudad de México.</p>
+          <p>Suplementos originales en existencia y recetas para comer con objetivo. Desde la Ciudad de México.</p>
         </div>
 
         <nav aria-label="Secciones del pie de página">

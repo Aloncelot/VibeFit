@@ -100,7 +100,7 @@ export default function CartDrawer() {
             {items.length === 0 ? (
               <div className={styles.empty}>
                 <p className={styles.emptyTitle}>Tu carrito está vacío</p>
-                <p>Agrega suplementos, ropa o accesorios desde el catálogo.</p>
+                <p>Agrega suplementos desde el catálogo.</p>
                 <button type="button" className="btn btn-outline" onClick={handleClose}>
                   Ver catálogo
                 </button>

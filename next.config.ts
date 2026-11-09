@@ -36,6 +36,15 @@ const nextConfig: NextConfig = {
     ],
   },
 
+  // La tienda ahora es solo de suplementos: los enlaces viejos llegan al catálogo.
+  async redirects() {
+    return [
+      { source: '/ropa', destination: '/suplementos', permanent: true },
+      { source: '/accesorios', destination: '/suplementos', permanent: true },
+      { source: '/admin/inventario/ropa/:path*', destination: '/admin/inventario', permanent: false },
+    ];
+  },
+
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },

@@ -7,12 +7,10 @@ import styles from './solicitud.module.css';
 
 const COPIA: Record<string, { titulo: string; ejemplo: string }> = {
   suplementos: { titulo: '¿No encuentras un suplemento?', ejemplo: 'Ej. Creatina Creapure 500 g' },
-  ropa: { titulo: '¿Buscas una prenda que no ves aquí?', ejemplo: 'Ej. Jogger YoungLA 219 talla M' },
-  accesorios: { titulo: '¿Te falta algún accesorio?', ejemplo: 'Ej. Cinturón de palanca 10 mm' },
 };
 
 /** Formulario al final del catálogo: el cliente pide un producto y le llega al admin. */
-export default function SolicitudProducto({ seccion }: { seccion: 'suplementos' | 'ropa' | 'accesorios' }) {
+export default function SolicitudProducto({ seccion }: { seccion: 'suplementos' }) {
   const [state, action, isPending] = useActionState<SolicitudState, FormData>(enviarSolicitudProducto, {});
   const { cliente } = useCart();
   const id = useId();

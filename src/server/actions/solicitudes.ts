@@ -12,7 +12,7 @@ export interface SolicitudState {
   error?: string;
 }
 
-const SECCIONES = ['suplementos', 'ropa', 'accesorios'] as const;
+const SECCIONES = ['suplementos'] as const;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /** "¿No encuentras lo que buscas?": la solicitud llega a /admin/solicitudes. */

@@ -43,6 +43,13 @@ export default function AuthForm({ modo, desde }: { modo: 'entrar' | 'registro';
             Mínimo 8 caracteres.
           </p>
         )}
+        {modo === 'entrar' && (
+          <p className={styles.help}>
+            <Link href="/recuperar" className={styles.olvide}>
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </p>
+        )}
       </div>
 
       {state.error && (

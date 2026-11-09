@@ -1,58 +1,47 @@
 import Link from 'next/link';
 import { connection } from 'next/server';
-import { getConteosPortada } from '@/server/queries/catalogo';
+import { getMarcasPortada } from '@/server/queries/catalogo';
 import { OBJETIVOS } from '@/content/recetas';
 import { getRecetas } from '@/server/queries/recetas';
 import { getResenasPublicas } from '@/server/queries/resenas';
 import Estrellas from '@/components/resenas/estrellas';
 import ListaResenas from '@/components/resenas/lista-resenas';
 import resenaStyles from '@/components/resenas/resenas.module.css';
-import BrandRail from '@/components/store/brand-rail';
 import MacroBar from '@/components/recetas/macro-bar';
-import Barbell, { type Disco } from './_components/barbell';
 import HeroMotion from './_components/hero-motion';
 import styles from './_components/home.module.css';
 
-async function getConteos() {
+async function getMarcas() {
   try {
-    return await getConteosPortada();
+    return await getMarcasPortada();
   } catch (error) {
     // La portada se muestra aunque la base de datos no responda.
     console.error('No se pudieron leer las marcas de la portada:', error);
-    return null;
+    return [];
   }
 }
 
+
 export default async function HomePage() {
   await connection(); // se renderiza por petición; los datos vienen del caché del catálogo
-  const [conteos, { resumen, resenas }, recetas] = await Promise.all([getConteos(), getResenasPublicas(3), getRecetas()]);
+  const [marcas, { resumen, resenas }, recetas] = await Promise.all([getMarcas(), getResenasPublicas(3), getRecetas()]);
   const receta = recetas[0];
 
-  const discos: Disco[] = [
-    { href: '/suplementos', label: 'Suplementos', tone: 'vibrant', size: 1 },
-    { href: '/ropa', label: 'Ropa', tone: 'soft', size: 0.84 },
-    { href: '/accesorios', label: 'Accesorios', tone: 'pale', size: 0.7 },
-    { href: '/recetas', label: 'Recetas', tone: 'dark', size: 0.56 },
-  ];
 
   return (
     <>
-      <section className={styles.hero} aria-labelledby="hero-titulo">
+      <section
+        className={styles.hero}
+        aria-labelledby="hero-titulo"
+        style={{ '--poster': 'url(/hero/hero-poster.webp)' } as React.CSSProperties}
+      >
         <HeroMotion
-          titulo="Equipo y nutrición para entrenar pesado"
-          texto="Suplementos originales, ropa de Gymshark, YoungLA y Darc Sport, accesorios para el gym y recetas con los macros contados. Si aparece en la tienda, está en existencia."
+          titulo="Suplementos originales para entrenar pesado"
+          texto="Proteína, creatina, pre-entrenos y aminoácidos de las marcas que ya conoces. Si aparece en la tienda, está en existencia."
+          marcas={marcas.map((m) => m.nombre).sort((a, b) => a.localeCompare(b))}
         />
-        <Barbell discos={discos} />
       </section>
 
-      {conteos && conteos.marcasSuplementos.length > 0 && (
-        <section className={`container ${styles.brands}`} aria-labelledby="marcas-titulo">
-          <h2 id="marcas-titulo" className={styles.sectionTitle}>
-            Marcas de suplementos
-          </h2>
-          <BrandRail basePath="/suplementos" marcas={conteos.marcasSuplementos} params={{}} />
-        </section>
-      )}
 
       {resumen.total > 0 && (
         <section className={`container ${resenaStyles.franja}`} aria-labelledby="resenas-titulo">
